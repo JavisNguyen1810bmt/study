@@ -2,53 +2,94 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+<!-- Thêm meta viewport để hỗ trợ hiển thị chuẩn trên giao diện di động -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz Tu Vung Tieng Anh - Solo Mode</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Roboto, sans-serif;
     background: linear-gradient(135deg, #1f1c2c, #928dab);
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 15px 10px;
+    margin: 0;
+    min-height: 100vh;
 }
 
-/* BOX */
+/* PLAYER BOX */
+.player-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.player {
+    padding: 10px 24px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    background: #00e5ff;
+    color: black;
+    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+}
+
+/* QUIZ BOX */
 .quiz-box {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(15px);
-    border-radius: 25px;
-    padding: 30px;
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 20px 15px;
     max-width: 750px;
-    margin: auto;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    width: 100%;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.5s ease;
 }
 
-/* GRID */
+h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+/* GRID TỰ ĐỘNG THAY ĐỔI CỘT TÙY KÍCH THƯỚC MÀN HÌNH */
 .grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin-bottom: 25px;
+    /* Tự động chia cột linh hoạt: mỗi ô tối thiểu 50px */
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 10px;
     max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .cell {
     background: linear-gradient(145deg, #ffffff, #dcdcdc);
     color: black;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 12px 5px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.25s;
+    font-size: 1rem;
+    transition: all 0.2s;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .cell:hover {
-    transform: translateY(-3px) scale(1.05);
+    transform: translateY(-2px) scale(1.03);
+}
+
+.cell:active {
+    transform: scale(0.95);
 }
 
 /* BUTTON */
@@ -56,18 +97,24 @@ body {
     display: block;
     width: 100%;
     margin: 10px 0;
-    padding: 14px;
+    padding: 12px 15px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     background: white;
     color: black;
     font-weight: bold;
-    transition: 0.25s;
+    font-size: 0.95rem;
+    transition: 0.2s;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
 
 .correct {
@@ -82,7 +129,7 @@ body {
     animation: shake 0.3s;
 }
 
-/* ANIMATION */
+/* ANIMATIONS */
 @keyframes shake {
     0% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
@@ -93,24 +140,20 @@ body {
 
 @keyframes pop {
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    50% { transform: scale(1.08); }
     100% { transform: scale(1); }
 }
 
 @keyframes fadeIn {
-    from {opacity:0; transform:translateY(10px);}
-    to {opacity:1;}
-}
-
-/* TEXT */
-h2 {
-    margin-bottom: 15px;
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; }
 }
 
 .score {
-    font-size: 26px;
+    font-size: 1.1rem;
     margin-top: 15px;
     font-weight: bold;
+    line-height: 1.5;
 }
 
 .fade-out {
@@ -128,20 +171,42 @@ h2 {
     }
 }
 
-.player-box {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
+/* TỐI ƯU CHO MÀN HÌNH NHỎ (ĐIỆN THOẠI < 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: 10px 8px;
+    }
 
-.player {
-    padding: 12px 30px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 20px;
-    background: #00e5ff;
-    color: black;
-    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+    .player {
+        font-size: 16px;
+        padding: 8px 18px;
+    }
+
+    .quiz-box {
+        padding: 15px 12px;
+        border-radius: 16px;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .grid {
+        /* Trên màn hình nhỏ hiển thị cố định 6 cột đều đẹp */
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+    }
+
+    .cell {
+        padding: 8px 2px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
 }
 </style>
 
@@ -158,7 +223,6 @@ h2 {
     <div id="answers"></div>
     <div class="score" id="score"></div>
 </div>
-<br>
 
 <div id="grid" class="grid"></div>
 
@@ -271,7 +335,7 @@ let originalQuestions = [
     {q: "90. 'expose' nghĩa là gì?", a: ["làm cho tiếp xúc, cho trải nghiệm", "củng cố", "thay thế", "lắp ráp"], c: 0},
     {q: "91. 'glimpse' nghĩa là gì?", a: ["cái nhìn thoáng qua", "bằng chứng", "sáng kiến", "lời cảnh báo"], c: 0},
     {q: "92. 'out of' nghĩa là gì?", a: ["hết, không còn", "lỗi thời", "đột ngột", "trực tiếp"], c: 0},
-    {q: "93. 'outdated' nghĩa is gì?", a: ["lỗi thời, không còn dùng", "bền vững", "sắc bén", "tương thích"], c: 0},
+    {q: "93. 'outdated' nghĩa là gì?", a: ["lỗi thời, không còn dùng", "bền vững", "sắc bén", "tương thích"], c: 0},
     {q: "94. 'practice' nghĩa là gì?", a: ["thói quen, luyện tập", "quy tắc", "sự củng cố", "kỹ năng"], c: 0},
     {q: "95. 'reinforce' nghĩa là gì?", a: ["củng cố, tăng cường", "thay thế", "xử lý", "lắp ráp"], c: 0},
     {q: "96. 'verbally' nghĩa là gì?", a: ["bằng lời nói", "về mặt thể chất", "về mặt kỹ thuật", "trực tiếp"], c: 0},
@@ -301,7 +365,7 @@ let originalQuestions = [
     {q: "120. 'revise' nghĩa là gì?", a: ["sửa đổi, viết lại", "đọc soát lỗi", "đề cập", "gấp"], c: 0}
 ];
 
-// Tráo ngẫu nhiên toàn bộ 120 câu hỏi
+// Tráo ngẫu nhiên toàn bộ câu hỏi
 let questions = originalQuestions
     .map(q => shuffleAnswers(q)) 
     .sort(() => Math.random() - 0.5); 
@@ -343,7 +407,7 @@ function check(i, btn){
 
     if(i===correct){
         btn.classList.add("correct");
-        totalScore += 10; // Mỗi câu đúng cộng 10 điểm
+        totalScore += 10;
     } else {
         btn.classList.add("wrong");
     }
