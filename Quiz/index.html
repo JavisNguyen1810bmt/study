@@ -2,9 +2,8 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<!-- Thêm meta viewport để hỗ trợ hiển thị chuẩn trên giao diện di động -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Tu Vung Tieng Anh - Solo Mode</title>
+<title>Quiz Namhoang00bmt</title>
 
 <style>
 * {
@@ -44,7 +43,7 @@ body {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 20px;
-    padding: 20px 15px;
+    padding: 25px 15px;
     max-width: 750px;
     width: 100%;
     margin: 0 auto 20px auto;
@@ -54,15 +53,110 @@ body {
 
 h2 {
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.15rem;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
     line-height: 1.4;
 }
 
-/* GRID TỰ ĐỘNG THAY ĐỔI CỘT TÙY KÍCH THƯỚC MÀN HÌNH */
+/* INPUT FIELD & BUTTON */
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.input-box {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    outline: none;
+    transition: all 0.25s;
+}
+
+.input-box:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    background: #fff;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #00e676;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* FEEDBACK MSG */
+.feedback {
+    margin-top: 15px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    min-height: 28px;
+    line-height: 1.4;
+}
+
+.text-correct { color: #00e676; }
+.text-wrong { color: #ff5252; }
+
+/* BẢNG THỐNG KÊ CÂU SAI */
+.wrong-list-container {
+    margin-top: 20px;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wrong-list-title {
+    font-size: 1.1rem;
+    color: #ff5252;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.wrong-item {
+    background: rgba(255, 82, 82, 0.15);
+    border-left: 4px solid #ff5252;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.wrong-item span.user-ans {
+    color: #ff8a80;
+    text-decoration: line-through;
+}
+
+.wrong-item span.correct-ans {
+    color: #69f0ae;
+    font-weight: bold;
+}
+
+/* GRID TỰ ĐỘNG CO GIÃN */
 .grid {
     display: grid;
-    /* Tự động chia cột linh hoạt: mỗi ô tối thiểu 50px */
     grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
     gap: 10px;
     max-width: 750px;
@@ -81,69 +175,12 @@ h2 {
     transition: all 0.2s;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
 }
 
-.cell:hover {
-    transform: translateY(-2px) scale(1.03);
-}
-
-.cell:active {
-    transform: scale(0.95);
-}
-
-/* BUTTON */
-.btn {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background: white;
-    color: black;
-    font-weight: bold;
-    font-size: 0.95rem;
-    transition: 0.2s;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.btn:hover {
-    transform: scale(1.02);
-}
-
-.btn:active {
-    transform: scale(0.98);
-}
-
-.correct {
-    background: #00e676 !important;
-    color: white;
-    animation: pop 0.3s;
-}
-
-.wrong {
-    background: #ff5252 !important;
-    color: white;
-    animation: shake 0.3s;
-}
+.cell:hover { transform: translateY(-2px) scale(1.03); }
+.cell:active { transform: scale(0.95); }
 
 /* ANIMATIONS */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    50% { transform: translateX(6px); }
-    75% { transform: translateX(-6px); }
-    100% { transform: translateX(0); }
-}
-
-@keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; }
@@ -156,60 +193,19 @@ h2 {
     line-height: 1.5;
 }
 
-.fade-out {
-    animation: vanish 0.4s forwards;
-}
+.fade-out { animation: vanish 0.4s forwards; }
 
 @keyframes vanish {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0.2);
-        opacity: 0;
-    }
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.2); opacity: 0; }
 }
 
-/* TỐI ƯU CHO MÀN HÌNH NHỎ (ĐIỆN THOẠI < 480px) */
 @media (max-width: 480px) {
-    body {
-        padding: 10px 8px;
-    }
-
-    .player {
-        font-size: 16px;
-        padding: 8px 18px;
-    }
-
-    .quiz-box {
-        padding: 15px 12px;
-        border-radius: 16px;
-    }
-
-    h2 {
-        font-size: 1rem;
-    }
-
-    .btn {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-    }
-
-    .grid {
-        /* Trên màn hình nhỏ hiển thị cố định 6 cột đều đẹp */
-        grid-template-columns: repeat(6, 1fr);
-        gap: 6px;
-    }
-
-    .cell {
-        padding: 8px 2px;
-        font-size: 0.85rem;
-        border-radius: 8px;
-    }
+    .grid { grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    .cell { padding: 8px 2px; font-size: 0.85rem; }
+    h2 { font-size: 1.05rem; }
 }
 </style>
-
 </head>
 
 <body>
@@ -220,8 +216,17 @@ h2 {
 
 <div class="quiz-box">
     <h2 id="question">Chọn một ô vuông bên dưới để bắt đầu</h2>
-    <div id="answers"></div>
+    
+    <div id="quiz-content" style="display: none;">
+        <div class="input-container">
+            <input type="text" id="user-input" class="input-box" placeholder="Nhập đáp án chính xác..." autocomplete="off" onkeypress="handleKeyPress(event)">
+            <button class="submit-btn" onclick="checkAnswer()">Xác nhận (Enter)</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+    </div>
+
     <div class="score" id="score"></div>
+    <div id="wrong-summary"></div>
 </div>
 
 <div id="grid" class="grid"></div>
@@ -229,151 +234,150 @@ h2 {
 <script>
 let totalScore = 0;
 
-function shuffleAnswers(q){
-    let correctAnswer = q.a[q.c];
-    let shuffled = [...q.a].sort(() => Math.random() - 0.5);
-    let newIndex = shuffled.indexOf(correctAnswer);
-
-    return {
-        q: q.q,
-        a: shuffled,
-        c: newIndex
-    };
-}
-
-// FULL 120 TỪ VỰNG TỪ 6 ẢNH
-let originalQuestions = [
-    {q: "1. 'abide by' có nghĩa là gì?", a: ["tuân theo, tuân thủ", "hủy bỏ", "thỏa thuận", "xác định"], c: 0},
-    {q: "2. Từ nào nghĩa là 'sự thỏa thuận, hợp đồng'?", a: ["assurance", "agreement", "cancellation", "provision"], c: 1},
-    {q: "3. 'assurance' nghĩa là gì?", a: ["sự đảm bảo, tự tin", "sự hủy bỏ", "bên tham gia", "điều khoản"], c: 0},
-    {q: "4. Từ nào nghĩa là 'sự hủy bỏ, sự dừng lại'?", a: ["cancellation", "expiration", "reduction", "failure"], c: 0},
-    {q: "5. 'determine' nghĩa là gì?", a: ["xác định, tìm ra", "thu hút", "so sánh", "tiêu thụ"], c: 0},
-    {q: "6. 'engage' nghĩa là gì?", a: ["tham gia, lôi cuốn", "hủy bỏ", "ràng buộc", "giải quyết"], c: 0},
-    {q: "7. Từ nào nghĩa là 'thiết lập lâu dài, tạo dựng'?", a: ["establish", "evaluate", "demonstrate", "facilitate"], c: 0},
-    {q: "8. 'obligate' nghĩa là gì?", a: ["ràng buộc (pháp lý/đạo đức)", "đánh giá", "thu thập", "đề nghị"], c: 0},
-    {q: "9. Từ nào nghĩa là 'bên (tham gia), phe, nhóm'?", a: ["party", "provision", "session", "courier"], c: 0},
-    {q: "10. 'provision' nghĩa là gì?", a: ["điều khoản, sự chuẩn bị", "sự củng cố", "sự thất bại", "lời cảnh báo"], c: 0},
-    {q: "11. Từ nào nghĩa là 'giải quyết, sự quyết tâm'?", a: ["resolve", "require", "revise", "register"], c: 0},
-    {q: "12. 'specific' nghĩa là gì?", a: ["cụ thể, riêng biệt", "tương thích", "mạnh mẽ", "đột ngột"], c: 0},
-    {q: "13. Từ nào nghĩa là 'thu hút, lôi cuốn'?", a: ["attract", "avoid", "address", "assemble"], c: 0},
-    {q: "14. 'compare' nghĩa là gì?", a: ["so sánh", "tiêu thụ", "thuyết phục", "đánh giá"], c: 0},
-    {q: "15. 'competition' nghĩa là gì?", a: ["sự cạnh tranh, cuộc thi", "sự hài lòng", "sự đa dạng", "sự thay thế"], c: 0},
-    {q: "16. 'consume' nghĩa là gì?", a: ["tiêu thụ, sử dụng hết", "thuyết phục", "tránh", "phát triển"], c: 0},
-    {q: "17. Từ nào nghĩa là 'thuyết phục'?", a: ["convince", "consider", "cover", "duplicate"], c: 0},
-    {q: "18. 'currently' nghĩa là gì?", a: ["hiện tại, hiện nay", "thường xuyên", "trước hết", "thoải mái"], c: 0},
-    {q: "19. 'fad' nghĩa là gì?", a: ["trào lưu, mốt nhất thời", "nguồn cảm hứng", "danh tiếng", "sáng kiến"], c: 0},
-    {q: "20. Từ nào nghĩa là 'nguồn cảm hứng'?", a: ["inspiration", "persuasion", "satisfaction", "reputation"], c: 0},
-    {q: "21. 'market' (v, n) nghĩa là gì?", a: ["tiếp thị, thị trường", "sự đa dạng", "chiến lược", "sự thay thế"], c: 0},
-    {q: "22. 'persuasion' nghĩa là gì?", a: ["sự thuyết phục, niềm tin", "sự hài lòng", "sự hủy bỏ", "sự giảm bớt"], c: 0},
-    {q: "23. 'productive' nghĩa là gì?", a: ["có năng suất, hiệu quả", "lỗi thời", "bền vững", "chật chội"], c: 0},
-    {q: "24. 'satisfaction' nghĩa là gì?", a: ["sự hài lòng", "sự củng cố", "sự đa dạng", "sự phân bổ"], c: 0},
-    {q: "25. 'characteristic' nghĩa là gì?", a: ["đặc trưng, tính chất riêng", "hậu quả", "điều khoản", "nguy cơ"], c: 0},
-    {q: "26. Từ nào nghĩa là 'hậu quả, kết quả tất yếu'?", a: ["consequence", "complication", "capacity", "courier"], c: 0},
-    {q: "27. 'consider' nghĩa là gì?", a: ["cân nhắc, xem xét kỹ", "bảo vệ", "ngụ ý", "yêu cầu"], c: 0},
-    {q: "28. 'cover' (v) nghĩa là gì?", a: ["bảo vệ, bảo hiểm (chi trả)", "tránh", "chứng minh", "đánh giá"], c: 0},
-    {q: "29. 'expiration' nghĩa là gì?", a: ["sự hết hạn", "sự giảm bớt", "sự lặp lại", "sự thay thế"], c: 0},
-    {q: "30. 'frequently' nghĩa là gì?", a: ["thường xuyên", "hiện tại", "trước hết", "về mặt thể chất"], c: 0},
-    {q: "31. 'imply' nghĩa là gì?", a: ["ngụ ý, ám chỉ", "bảo vệ", "yêu cầu", "giải quyết"], c: 0},
-    {q: "32. 'promise' nghĩa là gì?", a: ["lời hứa, cam kết", "nguy cơ", "chiến lược", "quy tắc"], c: 0},
-    {q: "33. 'protect' nghĩa là gì?", a: ["bảo vệ", "xác định", "so sánh", "thu thập"], c: 0},
-    {q: "34. Từ nào nghĩa là 'danh tiếng, uy tín'?", a: ["reputation", "association", "location", "popularity"], c: 0},
-    {q: "35. 'require' nghĩa là gì?", a: ["yêu cầu, đòi hỏi", "hủy bỏ", "giải quyết", "lắp ráp"], c: 0},
-    {q: "36. 'variety' nghĩa là gì?", a: ["sự đa dạng, nhiều loại", "sự giảm bớt", "sự hài lòng", "sự củng cố"], c: 0},
-    {q: "37. 'address' (v) nghĩa là gì?", a: ["giải quyết, phát biểu", "tránh", "đánh giá", "thu thập"], c: 0},
-    {q: "38. 'avoid' nghĩa là gì?", a: ["tránh", "thuyết phục", "tiêu thụ", "mở rộng"], c: 0},
-    {q: "39. 'demonstrate' nghĩa là gì?", a: ["chứng minh, thể hiện rõ", "tránh", "đánh giá", "thu thập"], c: 0},
-    {q: "40. 'develop' nghĩa là gì?", a: ["phát triển, mở rộng", "đánh giá", "thu thập", "đề nghị"], c: 0},
-    {q: "41. 'evaluate' nghĩa là gì?", a: ["đánh giá", "thu thập", "mở rộng", "thay thế"], c: 0},
-    {q: "42. 'gather' nghĩa là gì?", a: ["thu thập, suy ra", "đánh giá", "đề nghị", "tránh"], c: 0},
-    {q: "43. 'offer' nghĩa là gì?", a: ["đề nghị, đề xuất", "chủ yếu", "rủi ro", "chiến lược"], c: 0},
-    {q: "44. 'primarily' nghĩa là gì?", a: ["chủ yếu, trước hết", "hiện tại", "thường xuyên", "trực tiếp"], c: 0},
-    {q: "45. Từ nào nghĩa là 'rủi ro'?", a: ["risk", "strategy", "substitution", "session"], c: 0},
-    {q: "46. 'strategy' nghĩa là gì?", a: ["chiến lược", "rủi ro", "sự thay thế", "hiệp hội"], c: 0},
-    {q: "47. 'strong' nghĩa là gì?", a: ["mạnh mẽ, vững chắc", "bền bỉ", "sắc bén", "lỗi thời"], c: 0},
-    {q: "48. 'substitution' nghĩa là gì?", a: ["sự thay thế", "sự củng cố", "sự lặp lại", "sự giảm bớt"], c: 0},
-    {q: "49. 'accommodate' nghĩa là gì?", a: ["đáp ứng, phù hợp", "sắp xếp", "liên lạc", "ghi danh"], c: 0},
-    {q: "50. 'arrangement' nghĩa là gì?", a: ["sự sắp xếp, kế hoạch", "hiệp hội", "vị trí", "buổi họp"], c: 0},
-    {q: "51. 'association' nghĩa là gì?", a: ["hiệp hội, tổ chức", "buổi họp", "vị trí", "quyền truy cập"], c: 0},
-    {q: "52. 'attend' nghĩa là gì?", a: ["tham dự, chú ý đến", "liên lạc", "chứa đựng", "đăng ký"], c: 0},
-    {q: "53. 'get in touch' nghĩa là gì?", a: ["liên lạc", "tham gia", "chứa đựng", "lựa chọn"], c: 0},
-    {q: "54. 'hold' nghĩa là gì?", a: ["chứa đựng, tổ chức", "tham gia", "xóa", "hiển thị"], c: 0},
-    {q: "55. 'location' nghĩa là gì?", a: ["vị trí, địa điểm", "buổi họp", "hiệp hội", "sự sắp xếp"], c: 0},
-    {q: "56. 'overcrowded' nghĩa là gì?", a: ["quá đông đúc, chật chội", "tương thích", "bền vững", "giá rẻ"], c: 0},
-    {q: "57. 'register' nghĩa là gì?", a: ["sổ ghi chép, đăng ký", "lựa chọn", "xóa", "bỏ qua"], c: 0},
-    {q: "58. 'select' nghĩa là gì?", a: ["lựa chọn, được chọn lọc", "phân bổ", "xóa", "sao chép"], c: 0},
-    {q: "59. 'session' nghĩa là gì?", a: ["buổi họp, phiên họp", "vị trí", "đơn kiến nghị", "quyền truy cập"], c: 0},
-    {q: "60. 'take part in' nghĩa là gì?", a: ["tham gia", "liên lạc", "chứa đựng", "bỏ qua"], c: 0},
-    {q: "61. 'access' nghĩa là gì?", a: ["quyền truy cập, truy cập", "phân bổ", "tương thích", "hiển thị"], c: 0},
-    {q: "62. 'allocate' nghĩa là gì?", a: ["phân bổ, chỉ định", "tương thích", "xóa", "sao chép"], c: 0},
-    {q: "63. 'compatible' nghĩa là gì?", a: ["tương thích", "lỗi thời", "sắc bén", "bền vững"], c: 0},
-    {q: "64. 'delete' nghĩa là gì?", a: ["xóa", "sao chép", "bỏ qua", "hiển thị"], c: 0},
-    {q: "65. 'display' nghĩa là gì?", a: ["màn hình, hiển thị", "xóa", "tìm ra", "tắt máy"], c: 0},
-    {q: "66. 'duplicate' nghĩa là gì?", a: ["sao chép, làm giống hệt", "xóa", "bỏ qua", "cảnh báo"], c: 0},
-    {q: "67. 'failure' nghĩa là gì?", a: ["sự thất bại, thiếu sót", "sự giảm bớt", "sự lặp lại", "sự củng cố"], c: 0},
-    {q: "68. 'figure out' nghĩa là gì?", a: ["tìm ra, hiểu ra", "phớt lờ", "tắt máy", "sao chép"], c: 0},
-    {q: "69. 'ignore' nghĩa là gì?", a: ["phớt lờ, bỏ qua", "tìm kiếm", "cảnh báo", "xóa"], c: 0},
-    {q: "70. 'search' nghĩa là gì?", a: ["tìm kiếm", "tắt máy", "cảnh báo", "hiển thị"], c: 0},
-    {q: "71. 'shut down' nghĩa là gì?", a: ["tắt (máy), ngừng hoạt động", "bỏ qua", "tìm ra", "sao chép"], c: 0},
-    {q: "72. 'warning' nghĩa là gì?", a: ["lời cảnh báo", "sự thất bại", "sáng kiến", "nguồn cảm hứng"], c: 0},
-    {q: "73. 'affordable' nghĩa là gì?", a: ["giá cả phải chăng", "bền bỉ", "sắc bén", "lỗi thời"], c: 0},
-    {q: "74. 'as needed' nghĩa là gì?", a: ["khi cần thiết", "trước hết", "thường xuyên", "trực tiếp"], c: 0},
-    {q: "75. 'be in charge of' nghĩa là gì?", a: ["chịu trách nhiệm, phụ trách", "cập nhật tin mới", "dự trữ", "tái diễn"], c: 0},
-    {q: "76. 'capacity' nghĩa là gì?", a: ["sức chứa, khả năng tối đa", "sự giảm bớt", "bố cục", "sáng kiến"], c: 0},
-    {q: "77. 'durable' nghĩa là gì?", a: ["bền, chắc chắn, lâu bền", "giá rẻ", "chật chội", "lỗi thời"], c: 0},
-    {q: "78. 'initiative' nghĩa là gì?", a: ["sáng kiến, bước đầu tiên", "nhà cung cấp", "sự giảm bớt", "bằng chứng"], c: 0},
-    {q: "79. 'physically' nghĩa là gì?", a: ["về mặt thể chất", "bằng lời nói", "về mặt kỹ thuật", "thoải mái"], c: 0},
-    {q: "80. 'provider' nghĩa là gì?", a: ["nhà cung cấp", "người đưa thư", "bên tham gia", "hiệp hội"], c: 0},
-    {q: "81. 'recur' nghĩa là gì?", a: ["tái diễn, xảy ra lại", "giảm bớt", "dự trữ", "củng cố"], c: 0},
-    {q: "82. 'reduction' nghĩa là gì?", a: ["sự giảm bớt, cắt giảm", "sự lặp lại", "sự tăng cường", "sự thay thế"], c: 0},
-    {q: "83. 'stay on top of' nghĩa là gì?", a: ["nắm bắt, cập nhật thông tin mới nhất", "phụ trách", "dự trữ", "xử lý"], c: 0},
-    {q: "84. 'stock' nghĩa là gì?", a: ["dự trữ hàng, nguồn cung", "nhà cung cấp", "sức chứa", "bằng chứng"], c: 0},
-    {q: "85. 'appreciation' nghĩa là gì?", a: ["sự đánh giá cao, lòng biết ơn", "sự hài lòng", "sự thuyết phục", "sự củng cố"], c: 0},
-    {q: "86. 'be made of' nghĩa là gì?", a: ["được tạo nên bởi", "tuyển dụng", "làm cho tiếp xúc", "phớt lờ"], c: 0},
-    {q: "87. 'bring in' nghĩa là gì?", a: ["tuyển dụng, mời vào", "bảo vệ", "ngụ ý", "xử lý"], c: 0},
-    {q: "88. 'casually' nghĩa là gì?", a: ["một cách thoải mái, không trang trọng", "bằng lời nói", "về mặt kỹ thuật", "trực tiếp"], c: 0},
-    {q: "89. 'code' (n) nghĩa là gì?", a: ["quy tắc ứng xử", "đĩa lưu trữ", "mạng lưới", "bố cục"], c: 0},
-    {q: "90. 'expose' nghĩa là gì?", a: ["làm cho tiếp xúc, cho trải nghiệm", "củng cố", "thay thế", "lắp ráp"], c: 0},
-    {q: "91. 'glimpse' nghĩa là gì?", a: ["cái nhìn thoáng qua", "bằng chứng", "sáng kiến", "lời cảnh báo"], c: 0},
-    {q: "92. 'out of' nghĩa là gì?", a: ["hết, không còn", "lỗi thời", "đột ngột", "trực tiếp"], c: 0},
-    {q: "93. 'outdated' nghĩa là gì?", a: ["lỗi thời, không còn dùng", "bền vững", "sắc bén", "tương thích"], c: 0},
-    {q: "94. 'practice' nghĩa là gì?", a: ["thói quen, luyện tập", "quy tắc", "sự củng cố", "kỹ năng"], c: 0},
-    {q: "95. 'reinforce' nghĩa là gì?", a: ["củng cố, tăng cường", "thay thế", "xử lý", "lắp ráp"], c: 0},
-    {q: "96. 'verbally' nghĩa là gì?", a: ["bằng lời nói", "về mặt thể chất", "về mặt kỹ thuật", "trực tiếp"], c: 0},
-    {q: "97. 'disk' nghĩa là gì?", a: ["đĩa (lưu trữ dữ liệu)", "phần mềm", "mạng lưới", "bố cục"], c: 0},
-    {q: "98. 'facilitate' nghĩa là gì?", a: ["tạo điều kiện thuận lợi, hỗ trợ", "xử lý", "thay thế", "lắp ráp"], c: 0},
-    {q: "99. 'network' nghĩa là gì?", a: ["kết nối, mạng lưới", "đĩa lưu trữ", "quy trình", "bố cục"], c: 0},
-    {q: "100. 'popularity' nghĩa là gì?", a: ["sự phổ biến, được ưa chuộng", "danh tiếng", "nguồn cảm hứng", "sự đa dạng"], c: 0},
-    {q: "101. 'process' (v, n) nghĩa là gì?", a: ["xử lý, quy trình", "thay thế", "kết nối", "lưu trữ"], c: 0},
-    {q: "102. 'replace' nghĩa là gì?", a: ["thay thế", "củng cố", "xử lý", "lắp ráp"], c: 0},
-    {q: "103. 'revolution' nghĩa là gì?", a: ["cuộc cách mạng, vòng quay", "sự phổ biến", "sự củng cố", "sự thất bại"], c: 0},
-    {q: "104. 'sharp' nghĩa là gì?", a: ["đột ngột, sắc bén, thông minh", "lỗi thời", "bền vững", "mạnh mẽ"], c: 0},
-    {q: "105. 'skill' nghĩa là gì?", a: ["kỹ năng", "thói quen", "sáng kiến", "quy tắc"], c: 0},
-    {q: "106. 'software' nghĩa là gì?", a: ["phần mềm", "đĩa lưu trữ", "mạng lưới", "bố cục"], c: 0},
-    {q: "107. 'store' (v) nghĩa là gì?", a: ["lưu trữ", "xử lý", "thay thế", "xóa"], c: 0},
-    {q: "108. 'technically' nghĩa là gì?", a: ["về mặt kỹ thuật", "bằng lời nói", "về mặt thể chất", "thoải mái"], c: 0},
-    {q: "109. 'assemble' nghĩa là gì?", a: ["lắp ráp, tập hợp lại", "thay thế", "xử lý", "phớt lờ"], c: 0},
-    {q: "110. 'beforehand' nghĩa là gì?", a: ["trước, từ trước", "hiện tại", "thường xuyên", "trực tiếp"], c: 0},
-    {q: "111. 'complication' nghĩa là gì?", a: ["sự phức tạp, tình huống khó khăn", "hậu quả", "sự thất bại", "sự hết hạn"], c: 0},
-    {q: "112. 'courier' nghĩa là gì?", a: ["người đưa thư, giao hàng", "nhà cung cấp", "bên tham gia", "hiệp hội"], c: 0},
-    {q: "113. 'express' (adj) nghĩa là gì?", a: ["nhanh, trực tiếp", "sắc bén", "lỗi thời", "bền bỉ"], c: 0},
-    {q: "114. 'fold' nghĩa là gì?", a: ["gấp (giấy)", "sửa đổi", "đề cập", "đọc soát lỗi"], c: 0},
-    {q: "115. 'layout' nghĩa là gì?", a: ["bố cục, cách trình bày", "đơn kiến nghị", "bằng chứng", "sổ ghi chép"], c: 0},
-    {q: "116. 'mention' nghĩa là gì?", a: ["sự đề cập, đề cập đến", "gấp", "sửa đổi", "đăng ký"], c: 0},
-    {q: "117. 'petition' nghĩa là gì?", a: ["đơn kiến nghị, yêu cầu chính thức", "bố cục", "bằng chứng", "lời cảnh báo"], c: 0},
-    {q: "118. 'proof' (v, n) nghĩa là gì?", a: ["đọc soát lỗi, bằng chứng", "sửa đổi", "đề cập", "gấp"], c: 0},
-    {q: "119. 'register' nghĩa là gì?", a: ["đăng ký, ghi nhận, sổ ghi chép", "sửa đổi", "gấp", "đọc soát lỗi"], c: 0},
-    {q: "120. 'revise' nghĩa là gì?", a: ["sửa đổi, viết lại", "đọc soát lỗi", "đề cập", "gấp"], c: 0}
+// DANH SÁCH TỪ VỰNG DẠNG CẶP (ENGLISH <-> VIETNAMESE)
+let vocabList = [
+    { en: "abide by", vi: ["tuân theo", "tuan theo", "tuân thủ", "tuan thu"] },
+    { en: "agreement", vi: ["sự thỏa thuận", "su thoa thuan", "hợp đồng", "hop dong"] },
+    { en: "assurance", vi: ["sự đảm bảo", "su dam bao", "tự tin", "tu tin"] },
+    { en: "cancellation", vi: ["sự hủy bỏ", "su huy bo", "sự dừng lại", "su dung lai"] },
+    { en: "determine", vi: ["xác định", "xac dinh", "tìm ra", "tim ra"] },
+    { en: "engage", vi: ["tham gia", "tham gia", "lôi cuốn", "loi cuon"] },
+    { en: "establish", vi: ["thiết lập", "thiet lap", "tạo dựng", "tao dung"] },
+    { en: "obligate", vi: ["ràng buộc", "rang buoc"] },
+    { en: "party", vi: ["bên", "ben", "phe", "nhóm", "nhom"] },
+    { en: "provision", vi: ["điều khoản", "dieu khoan", "sự chuẩn bị", "su chuan bi"] },
+    { en: "resolve", vi: ["giải quyết", "giai quyet", "sự quyết tâm", "su quyet tam"] },
+    { en: "specific", vi: ["cụ thể", "cu the", "riêng biệt", "rieng biet"] },
+    { en: "attract", vi: ["thu hút", "thu hut", "lôi cuốn", "loi cuon"] },
+    { en: "compare", vi: ["so sánh", "so sanh"] },
+    { en: "competition", vi: ["sự cạnh tranh", "su canh tranh", "cuộc thi", "cuoc thi"] },
+    { en: "consume", vi: ["tiêu thụ", "tieu thu", "sử dụng hết", "su dung het"] },
+    { en: "convince", vi: ["thuyết phục", "thuyet phuc"] },
+    { en: "currently", vi: ["hiện tại", "hien tai", "hiện nay", "hien nay"] },
+    { en: "fad", vi: ["trào lưu", "trao luu", "mốt nhất thời", "mot nhat thoi"] },
+    { en: "inspiration", vi: ["nguồn cảm hứng", "nguon cam hung"] },
+    { en: "market", vi: ["tiếp thị", "tiep thi", "thị trường", "thi truong"] },
+    { en: "persuasion", vi: ["sự thuyết phục", "su thuyet phuc", "niềm tin", "niem tin"] },
+    { en: "productive", vi: ["có năng suất", "co nang suat", "hiệu quả", "hieu qua"] },
+    { en: "satisfaction", vi: ["sự hài lòng", "su hai long"] },
+    { en: "characteristic", vi: ["đặc trưng", "dac trung", "tính chất riêng", "tinh chat rieng"] },
+    { en: "consequence", vi: ["hậu quả", "hau qua", "kết quả tất yếu", "ket qua tat yeu"] },
+    { en: "consider", vi: ["cân nhắc", "can nhac", "xem xét kỹ", "xem xet ky"] },
+    { en: "cover", vi: ["bảo vệ", "bao ve", "bảo hiểm", "bao hiem", "chi trả", "chi tra"] },
+    { en: "expiration", vi: ["sự hết hạn", "su het han"] },
+    { en: "frequently", vi: ["thường xuyên", "thuong xuyen"] },
+    { en: "imply", vi: ["ngụ ý", "ngu y", "ám chỉ", "am chi"] },
+    { en: "promise", vi: ["lời hứa", "loi hua", "cam kết", "cam ket"] },
+    { en: "protect", vi: ["bảo vệ", "bao ve"] },
+    { en: "reputation", vi: ["danh tiếng", "danh tieng", "uy tín", "uy tin"] },
+    { en: "require", vi: ["yêu cầu", "yeu cau", "đòi hỏi", "doi hoi"] },
+    { en: "variety", vi: ["sự đa dạng", "su da dang", "nhiều loại", "nhieu loai"] },
+    { en: "address", vi: ["giải quyết", "giai quyet", "phát biểu", "phat bieu"] },
+    { en: "avoid", vi: ["tránh", "tranh"] },
+    { en: "demonstrate", vi: ["chứng minh", "chung minh", "thể hiện rõ", "the hien ro"] },
+    { en: "develop", vi: ["phát triển", "phat trien", "mở rộng", "mo rong"] },
+    { en: "evaluate", vi: ["đánh giá", "danh gia"] },
+    { en: "gather", vi: ["thu thập", "thu thap", "suy ra", "suy ra"] },
+    { en: "offer", vi: ["đề nghị", "de nghi", "đề xuất", "de xuat"] },
+    { en: "primarily", vi: ["chủ yếu", "chu yeu", "trước hết", "truoc het"] },
+    { en: "risk", vi: ["rủi ro", "rui ro"] },
+    { en: "strategy", vi: ["chiến lược", "chien luoc"] },
+    { en: "strong", vi: ["mạnh mẽ", "manh me", "vững chắc", "vung chac"] },
+    { en: "substitution", vi: ["sự thay thế", "su thay the"] },
+    { en: "accommodate", vi: ["đáp ứng", "dap ung", "phù hợp", "phu hop"] },
+    { en: "arrangement", vi: ["sự sắp xếp", "su sap xep", "kế hoạch", "ke hoach"] },
+    { en: "association", vi: ["hiệp hội", "hiep hoi", "tổ chức", "to chuc"] },
+    { en: "attend", vi: ["tham dự", "tham du", "chú ý đến", "chu y den"] },
+    { en: "get in touch", vi: ["liên lạc", "lien lac"] },
+    { en: "hold", vi: ["chứa đựng", "chua dung", "tổ chức", "to chuc"] },
+    { en: "location", vi: ["vị trí", "vi tri", "địa điểm", "dia diem"] },
+    { en: "overcrowded", vi: ["quá đông đúc", "qua dong duc", "chật chội", "chat choi"] },
+    { en: "register", vi: ["đăng ký", "dang ky", "sổ ghi chép", "so ghi chep"] },
+    { en: "select", vi: ["lựa chọn", "lua chon"] },
+    { en: "session", vi: ["buổi họp", "buoi hop", "phiên họp", "phien hop"] },
+    { en: "take part in", vi: ["tham gia", "tham gia"] },
+    { en: "access", vi: ["truy cập", "truy cap", "quyền truy cập", "quyen truy cap"] },
+    { en: "allocate", vi: ["phân bổ", "phan bo", "chỉ định", "chi dinh"] },
+    { en: "compatible", vi: ["tương thích", "tuong thich"] },
+    { en: "delete", vi: ["xóa", "xoa"] },
+    { en: "display", vi: ["hiển thị", "hien thi", "màn hình", "man hinh"] },
+    { en: "duplicate", vi: ["sao chép", "sao chep", "làm giống hệt", "lam giong het"] },
+    { en: "failure", vi: ["sự thất bại", "su that bai", "thiếu sót", "thieu sot"] },
+    { en: "figure out", vi: ["tìm ra", "tim ra", "hiểu ra", "hieu ra"] },
+    { en: "ignore", vi: ["phớt lờ", "phot lo", "bỏ qua", "bo qua"] },
+    { en: "search", vi: ["tìm kiếm", "tim kiem"] },
+    { en: "shut down", vi: ["tắt", "tat", "ngừng hoạt động", "ngung hoat dong"] },
+    { en: "warning", vi: ["lời cảnh báo", "loi canh bao"] },
+    { en: "affordable", vi: ["giá cả phải chăng", "gia ca phai chang"] },
+    { en: "as needed", vi: ["khi cần thiết", "khi can thiet"] },
+    { en: "be in charge of", vi: ["chịu trách nhiệm", "chiu trach nhiem", "phụ trách", "phu trach"] },
+    { en: "capacity", vi: ["sức chứa", "suc chua", "khả năng tối đa", "kha nang toi da"] },
+    { en: "durable", vi: ["bền", "ben", "chắc chắn", "chac chan", "lâu bền", "lau ben"] },
+    { en: "initiative", vi: ["sáng kiến", "sang kien", "bước đầu tiên", "buoc dau tien"] },
+    { en: "physically", vi: ["về mặt thể chất", "ve mat the chat"] },
+    { en: "provider", vi: ["nhà cung cấp", "nha cung cap"] },
+    { en: "recur", vi: ["tái diễn", "tai dien", "xảy ra lại", "xay ra lai"] },
+    { en: "reduction", vi: ["sự giảm bớt", "su giam bot", "cắt giảm", "cat giam"] },
+    { en: "stay on top of", vi: ["nắm bắt", "nam bat", "cập nhật", "cap nhat"] },
+    { en: "stock", vi: ["dự trữ hàng", "du tru hang", "nguồn cung", "nguon cung"] },
+    { en: "appreciation", vi: ["sự đánh giá cao", "su danh gia cao", "lòng biết ơn", "long biet on"] },
+    { en: "be made of", vi: ["được tạo nên bởi", "duoc tao nen boi"] },
+    { en: "bring in", vi: ["tuyển dụng", "tuyen dung", "mời vào", "moi vao"] },
+    { en: "casually", vi: ["thoải mái", "thoai mai", "không trang trọng", "khong trang trong"] },
+    { en: "code", vi: ["quy tắc ứng xử", "quy tac ung xu"] },
+    { en: "expose", vi: ["cho tiếp xúc", "cho tiep xuc", "cho trải nghiệm", "cho trai nghiem"] },
+    { en: "glimpse", vi: ["cái nhìn thoáng qua", "cai nhin thoang qua"] },
+    { en: "out of", vi: ["hết", "het", "không còn", "khong con"] },
+    { en: "outdated", vi: ["lỗi thời", "loi thoi", "không còn dùng", "khong con dung"] },
+    { en: "practice", vi: ["thói quen", "thoi quen", "luyện tập", "luyen tap"] },
+    { en: "reinforce", vi: ["củng cố", "cung co", "tăng cường", "tang cuong"] },
+    { en: "verbally", vi: ["bằng lời nói", "bang loi noi"] },
+    { en: "disk", vi: ["đĩa", "dia", "đĩa lưu trữ", "dia luu tru"] },
+    { en: "facilitate", vi: ["tạo điều kiện thuận lợi", "tao dieu kien thuan loi", "hỗ trợ", "ho tro"] },
+    { en: "network", vi: ["mạng lưới", "mang luoi", "kết nối", "ket noi"] },
+    { en: "popularity", vi: ["sự phổ biến", "su pho bien", "được ưa chuộng", "duoc ua chuong"] },
+    { en: "process", vi: ["xử lý", "xu ly", "quy trình", "quy trinh"] },
+    { en: "replace", vi: ["thay thế", "thay the"] },
+    { en: "revolution", vi: ["cuộc cách mạng", "cuoc cach mang", "vòng quay", "vong quay"] },
+    { en: "sharp", vi: ["sắc bén", "sac ben", "đột ngột", "dot ngot", "thông minh", "thong minh"] },
+    { en: "skill", vi: ["kỹ năng", "ky nang"] },
+    { en: "software", vi: ["phần mềm", "phan mem"] },
+    { en: "store", vi: ["lưu trữ", "luu tru"] },
+    { en: "technically", vi: ["về mặt kỹ thuật", "ve mat ky thuat"] },
+    { en: "assemble", vi: ["lắp ráp", "lap rap", "tập hợp lại", "tap hop lai"] },
+    { en: "beforehand", vi: ["trước", "truoc", "từ trước", "tu truoc"] },
+    { en: "complication", vi: ["sự phức tạp", "su phuc tap", "tình huống khó khăn", "tinh huong kho khan"] },
+    { en: "courier", vi: ["người đưa thư", "nguoi dua thu", "giao hàng", "giao hang"] },
+    { en: "express", vi: ["nhanh", "trực tiếp", "truc tiep"] },
+    { en: "fold", vi: ["gấp", "gap"] },
+    { en: "layout", vi: ["bố cục", "bo cuc", "cách trình bày", "cach trinh bay"] },
+    { en: "mention", vi: ["đề cập", "de cap", "sự đề cập", "su de cap"] },
+    { en: "petition", vi: ["đơn kiến nghị", "don kien nghi", "yêu cầu chính thức", "yeu cau chinh thuc"] },
+    { en: "proof", vi: ["đọc soát lỗi", "doc soat loi", "bằng chứng", "bang chung"] },
+    { en: "revise", vi: ["sửa đổi", "sua doi", "viết lại", "viet lai"] }
 ];
 
-// Tráo ngẫu nhiên toàn bộ câu hỏi
-let questions = originalQuestions
-    .map(q => shuffleAnswers(q)) 
-    .sort(() => Math.random() - 0.5); 
+// TẠO CÂU HỎI ĐẢO 2 CHIỀU
+let generatedQuestions = [];
+vocabList.forEach(item => {
+    generatedQuestions.push({
+        prompt: item.en,
+        type: "EN_TO_VI",
+        answer: item.vi
+    });
+    generatedQuestions.push({
+        prompt: item.vi[0],
+        type: "VI_TO_EN",
+        answer: [item.en]
+    });
+});
+
+let questions = generatedQuestions.sort(() => Math.random() - 0.5);
 
 let current = null;
-let answered = Array(30).fill(null); 
+let answered = Array(30).fill(null);
+let wrongAnswersList = []; // MẢNG LƯU CÁC CÂU LÀM SAI
 
-// Tạo grid 30 ô
 function createGrid(){
     let html="";
     for(let i=0;i<30;i++){
@@ -385,31 +389,70 @@ function createGrid(){
 function selectQ(index){
     if(answered[index]!==null) return; 
 
-    current=index;
+    current = index;
     loadQ();
 }
 
 function loadQ(){
-    let q=questions[current];
-    document.getElementById("question").innerHTML=q.q;
-
-    let html="";
-    q.a.forEach((ans,i)=>{
-        html+=`<button class="btn" onclick="check(${i},this)">${ans}</button>`;
-    });
-
-    document.getElementById("answers").innerHTML=html;
+    let q = questions[current];
+    if(q.type === "EN_TO_VI") {
+        document.getElementById("question").innerHTML = `Từ Tiếng Anh <b>"${q.prompt}"</b> nghĩa Tiếng Việt là gì?`;
+    } else {
+        document.getElementById("question").innerHTML = `Từ Tiếng Việt <b>"${q.prompt}"</b> trong Tiếng Anh là gì?`;
+    }
+    
+    document.getElementById("quiz-content").style.display = "block";
+    document.getElementById("feedback").innerHTML = "";
+    
+    let input = document.getElementById("user-input");
+    input.value = "";
+    input.disabled = false;
+    input.focus();
 }
 
-function check(i, btn){
-    let correct = questions[current].c;
-    let cell = document.getElementById("cell"+current);
+function handleKeyPress(e) {
+    if (e.key === "Enter") {
+        checkAnswer();
+    }
+}
 
-    if(i===correct){
-        btn.classList.add("correct");
+function normalizeStr(str) {
+    return str.trim()
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/\s+/g, ' ');
+}
+
+function checkAnswer(){
+    let input = document.getElementById("user-input");
+    let rawInput = input.value;
+    let userAns = normalizeStr(rawInput);
+
+    if(!userAns) return;
+
+    let q = questions[current];
+    let isCorrect = q.answer.some(ans => normalizeStr(ans) === userAns);
+    let cell = document.getElementById("cell" + current);
+    let feedbackEl = document.getElementById("feedback");
+
+    input.disabled = true;
+
+    if(isCorrect){
+        feedbackEl.className = "feedback text-correct";
+        feedbackEl.innerText = "🎉 Chính xác! (+10 điểm)";
         totalScore += 10;
     } else {
-        btn.classList.add("wrong");
+        feedbackEl.className = "feedback text-wrong";
+        feedbackEl.innerText = `❌ Sai rồi! Đáp án chấp nhận: "${q.answer[0]}"`;
+        
+        // LƯU CÂU SAI VÀO DANH SÁCH
+        wrongAnswersList.push({
+            num: current + 1,
+            prompt: q.prompt,
+            userAns: rawInput,
+            correctAns: q.answer[0]
+        });
     }
 
     updateScoreUI();
@@ -421,9 +464,9 @@ function check(i, btn){
             cell.style.visibility = "hidden";
         },400);
 
-        document.getElementById("question").innerHTML="👉 Chọn ô tiếp theo";
-        document.getElementById("answers").innerHTML="";
-    },600);
+        document.getElementById("question").innerHTML = "👉 Chọn ô tiếp theo";
+        document.getElementById("quiz-content").style.display = "none";
+    }, 1500);
 
     answered[current] = true;
     checkFinish();
@@ -435,14 +478,34 @@ function checkFinish(){
         let percentage = Math.round((totalScore / maxScore) * 100);
         
         let rankMsg = "";
-        if(percentage >= 90) rankMsg = "🎉 Xuất sắc! Bạn đã thuộc rất kĩ từ vựng!";
-        else if(percentage >= 70) rankMsg = "👍 Khá tốt! Hãy tiếp tục ôn luyện nhé!";
+        if(percentage >= 90) rankMsg = "🎉 Xuất sắc! Khả năng nhớ từ vựng rất tuyệt vời!";
+        else if(percentage >= 70) rankMsg = "👍 Khá tốt! Hãy tiếp tục rèn luyện nhé!";
         else rankMsg = "💪 Cố gắng thêm nhé, hãy thử lại lượt mới!";
 
         document.getElementById("score").innerHTML =
             "<b>HOÀN THÀNH BÀI THI!</b><br>" +
             "Tổng điểm: " + totalScore + " / " + maxScore + " (" + percentage + "%)<br>" +
             rankMsg;
+
+        // HIỂN THỊ DANH SÁCH CÂU SAI NẾU CÓ
+        if(wrongAnswersList.length > 0) {
+            let summaryHTML = `<div class="wrong-list-container">
+                <div class="wrong-list-title">⚠️ Danh sách ${wrongAnswersList.length} câu bạn làm chưa đúng:</div>`;
+            
+            wrongAnswersList.forEach(item => {
+                summaryHTML += `
+                <div class="wrong-item">
+                    <b>Ô số ${item.num}:</b> Từ <b>"${item.prompt}"</b><br>
+                    • Bạn gõ: <span class="user-ans">${item.userAns}</span><br>
+                    • Đáp án đúng: <span class="correct-ans">${item.correctAns}</span>
+                </div>`;
+            });
+
+            summaryHTML += `</div>`;
+            document.getElementById("wrong-summary").innerHTML = summaryHTML;
+        } else {
+            document.getElementById("wrong-summary").innerHTML = `<div style="color: #00e676; font-weight: bold; margin-top: 15px;">🌟 Bạn đã trả lời đúng 100% tất cả các câu! Tốt lắm!</div>`;
+        }
     }
 }
 
