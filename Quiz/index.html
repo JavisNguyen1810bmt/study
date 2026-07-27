@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Namhoang00bmt</title>
+<title>Quiz Từ Vựng - Solo & 2v2</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     font-family: 'Segoe UI', Roboto, sans-serif;
@@ -20,25 +18,8 @@ body {
     min-height: 100vh;
 }
 
-/* PLAYER BOX */
-.player-box {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
-.player {
-    padding: 10px 24px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 18px;
-    background: #00e5ff;
-    color: black;
-    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
-}
-
-/* QUIZ BOX */
-.quiz-box {
+/* KHUNG CHUNG */
+.card-box {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -48,43 +29,103 @@ body {
     width: 100%;
     margin: 0 auto 20px auto;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.5s ease;
+}
+.card-box h2 {
+    color: #ff5252;
+    text-shadow:
+    0 0 5px  #ff260036,
+    0 0 10px #ff000034,
+    0 0 20px #ac2d2d3a,
+    0 0 40px #ff000033,
+    0 0 80px #ff00003b;
+}
+.card-box h3{
+    font-size: x-large;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: yellow;
+    text-shadow:
+    0 0 5px  #f5bc01,
+    0 0 10px #faf603b4,
+    0 0 20px #fce301c0,
+    0 0 40px #f3c706ad,
+    0 0 80px #e6bd06dc;
+}
+/* SCREEN 1: LOGIN & MODE SELECT */
+.form-group {
+    margin-bottom: 15px;
 }
 
-h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    line-height: 1.4;
+.input-style {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    outline: none;
 }
 
-/* INPUT FIELD & BUTTON */
+.mode-btn-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn-main {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+}
+
+.btn-solo { background: #00e5ff; color: black; }
+.btn-2v2 { background: #ff4081; color: white; }
+.btn-main:hover { transform: scale(1.05); }
+
+/* SCREEN 2: GAMEPLAY */
+.player-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.player-card {
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid transparent;
+}
+
+.player-card.active-turn {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px #00e5ff;
+    background: rgba(0, 229, 255, 0.2);
+}
+
+.team-a { color: #00e5ff; }
+.team-b { color: #ff5252; }
+
+/* INPUT & BUTTON IN GAME */
 .input-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
     max-width: 400px;
     margin: 0 auto;
-}
-
-.input-box {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.9);
-    color: #000;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-align: center;
-    outline: none;
-    transition: all 0.25s;
-}
-
-.input-box:focus {
-    border-color: #00e5ff;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-    background: #fff;
 }
 
 .submit-btn {
@@ -97,20 +138,13 @@ h2 {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.submit-btn:active {
-    transform: scale(0.98);
-}
-
-/* FEEDBACK MSG */
 .feedback {
     margin-top: 15px;
     font-size: 1.05rem;
     font-weight: bold;
     min-height: 28px;
-    line-height: 1.4;
 }
 
 .text-correct { color: #00e676; }
@@ -120,18 +154,9 @@ h2 {
 .wrong-list-container {
     margin-top: 20px;
     text-align: left;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.wrong-list-title {
-    font-size: 1.1rem;
-    color: #ff5252;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
 }
 
 .wrong-item {
@@ -140,21 +165,10 @@ h2 {
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 6px;
-    font-size: 0.95rem;
-    line-height: 1.4;
+    font-size: 0.9rem;
 }
 
-.wrong-item span.user-ans {
-    color: #ff8a80;
-    text-decoration: line-through;
-}
-
-.wrong-item span.correct-ans {
-    color: #69f0ae;
-    font-weight: bold;
-}
-
-/* GRID TỰ ĐỘNG CO GIÃN */
+/* GRID BOARD */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
@@ -173,28 +187,10 @@ h2 {
     font-weight: bold;
     font-size: 1rem;
     transition: all 0.2s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     user-select: none;
 }
 
-.cell:hover { transform: translateY(-2px) scale(1.03); }
-.cell:active { transform: scale(0.95); }
-
-/* ANIMATIONS */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; }
-}
-
-.score {
-    font-size: 1.1rem;
-    margin-top: 15px;
-    font-weight: bold;
-    line-height: 1.5;
-}
-
 .fade-out { animation: vanish 0.4s forwards; }
-
 @keyframes vanish {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(0.2); opacity: 0; }
@@ -203,38 +199,59 @@ h2 {
 @media (max-width: 480px) {
     .grid { grid-template-columns: repeat(6, 1fr); gap: 6px; }
     .cell { padding: 8px 2px; font-size: 0.85rem; }
-    h2 { font-size: 1.05rem; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="player-box">
-    <div id="player-score" class="player">🏆 Điểm số: 0 / 300</div>
-</div>
-
-<div class="quiz-box">
-    <h2 id="question">Chọn một ô vuông bên dưới để bắt đầu</h2>
+<!-- MAN HINTH DANG NHAP & CHON CHE DO -->
+<div id="login-screen" class="card-box" style="margin-top: 50px;">
+    <h2> !!MASTER CHEF!! </h2>
+    <p>Nhập tên người chơi để bắt đầu:</p>
     
-    <div id="quiz-content" style="display: none;">
-        <div class="input-container">
-            <input type="text" id="user-input" class="input-box" placeholder="Nhập đáp án chính xác..." autocomplete="off" onkeypress="handleKeyPress(event)">
-            <button class="submit-btn" onclick="checkAnswer()">Xác nhận (Enter)</button>
-        </div>
-        <div id="feedback" class="feedback"></div>
+    <div class="form-group">
+        <input type="text" id="username" class="input-style" placeholder="Tên người chơi..." autocomplete="off">
     </div>
 
-    <div class="score" id="score"></div>
-    <div id="wrong-summary"></div>
+    <div class="mode-btn-container">
+        <button class="btn-main btn-solo" onclick="startGame('solo')">👤 Chế Độ Solo</button>
+        <button class="btn-main btn-2v2" onclick="startGame('2v2')">👥 Chế Độ Đấu Đội 2v2</button>
+
+    </div>
+    <h3>BY: NamHoang</h3>
 </div>
 
-<div id="grid" class="grid"></div>
+<!-- MAN HINH GAMEPLAY -->
+<div id="game-screen" style="display: none;">
+    
+    <div class="player-box" id="scoreboard"></div>
+
+    <div class="card-box">
+        <h2 id="question">Chọn một ô vuông bên dưới để bắt đầu</h2>
+        
+        <div id="quiz-content" style="display: none;">
+            <div class="input-container">
+                <input type="text" id="user-input" class="input-style" placeholder="Nhập đáp án..." autocomplete="off" onkeypress="handleKeyPress(event)">
+                <button class="submit-btn" onclick="checkAnswer()">Xác nhận (Enter)</button>
+            </div>
+            <div id="feedback" class="feedback"></div>
+        </div>
+
+        <div class="score" id="score"></div>
+        <div id="wrong-summary"></div>
+    </div>
+
+    <div id="grid" class="grid"></div>
+</div>
 
 <script>
-let totalScore = 0;
+let gameMode = 'solo'; // 'solo' hoặc '2v2'
+let playerName = 'Player 1';
+let scoreA = 0;
+let scoreB = 0;
+let currentTeam = 'A'; // 'A' hoặc 'B' trong chế độ 2v2
 
-// DANH SÁCH TỪ VỰNG DẠNG CẶP (ENGLISH <-> VIETNAMESE)
 let vocabList = [
     { en: "abide by", vi: ["tuân theo", "tuan theo", "tuân thủ", "tuan thu"] },
     { en: "agreement", vi: ["sự thỏa thuận", "su thoa thuan", "hợp đồng", "hop dong"] },
@@ -357,26 +374,40 @@ let vocabList = [
     { en: "revise", vi: ["sửa đổi", "sua doi", "viết lại", "viet lai"] }
 ];
 
-// TẠO CÂU HỎI ĐẢO 2 CHIỀU
 let generatedQuestions = [];
 vocabList.forEach(item => {
-    generatedQuestions.push({
-        prompt: item.en,
-        type: "EN_TO_VI",
-        answer: item.vi
-    });
-    generatedQuestions.push({
-        prompt: item.vi[0],
-        type: "VI_TO_EN",
-        answer: [item.en]
-    });
+    generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
+    generatedQuestions.push({ prompt: item.vi[0], type: "VI_TO_EN", answer: [item.en] });
 });
 
 let questions = generatedQuestions.sort(() => Math.random() - 0.5);
-
 let current = null;
 let answered = Array(30).fill(null);
-let wrongAnswersList = []; // MẢNG LƯU CÁC CÂU LÀM SAI
+let wrongAnswersList = [];
+
+function startGame(mode) {
+    let nameInput = document.getElementById("username").value.trim();
+    if(nameInput) playerName = nameInput;
+    gameMode = mode;
+
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+
+    renderScoreboard();
+    createGrid();
+}
+
+function renderScoreboard() {
+    let sb = document.getElementById("scoreboard");
+    if(gameMode === 'solo') {
+        sb.innerHTML = `<div class="player-card active-turn team-a">👤 Người chơi: ${playerName} | 🏆 Điểm: <span id="val-scoreA">0</span></div>`;
+    } else {
+        sb.innerHTML = `
+            <div id="card-teamA" class="player-card team-a active-turn">🔵 Đội A: <span id="val-scoreA">0</span> điểm</div>
+            <div id="card-teamB" class="player-card team-b">🔴 Đội B: <span id="val-scoreB">0</span> điểm</div>
+        `;
+    }
+}
 
 function createGrid(){
     let html="";
@@ -388,17 +419,18 @@ function createGrid(){
 
 function selectQ(index){
     if(answered[index]!==null) return; 
-
     current = index;
     loadQ();
 }
 
 function loadQ(){
     let q = questions[current];
+    let turnText = (gameMode === '2v2') ? `[Lượt Đội ${currentTeam}] ` : '';
+    
     if(q.type === "EN_TO_VI") {
-        document.getElementById("question").innerHTML = `Từ Tiếng Anh <b>"${q.prompt}"</b> nghĩa Tiếng Việt là gì?`;
+        document.getElementById("question").innerHTML = `${turnText}Từ Tiếng Anh <b>"${q.prompt}"</b> nghĩa Tiếng Việt là gì?`;
     } else {
-        document.getElementById("question").innerHTML = `Từ Tiếng Việt <b>"${q.prompt}"</b> trong Tiếng Anh là gì?`;
+        document.getElementById("question").innerHTML = `${turnText}Từ Tiếng Việt <b>"${q.prompt}"</b> trong Tiếng Anh là gì?`;
     }
     
     document.getElementById("quiz-content").style.display = "block";
@@ -411,17 +443,11 @@ function loadQ(){
 }
 
 function handleKeyPress(e) {
-    if (e.key === "Enter") {
-        checkAnswer();
-    }
+    if (e.key === "Enter") checkAnswer();
 }
 
 function normalizeStr(str) {
-    return str.trim()
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .replace(/\s+/g, ' ');
+    return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ' ');
 }
 
 function checkAnswer(){
@@ -441,12 +467,12 @@ function checkAnswer(){
     if(isCorrect){
         feedbackEl.className = "feedback text-correct";
         feedbackEl.innerText = "🎉 Chính xác! (+10 điểm)";
-        totalScore += 10;
+        if(gameMode === 'solo' || currentTeam === 'A') scoreA += 10;
+        else scoreB += 10;
     } else {
         feedbackEl.className = "feedback text-wrong";
-        feedbackEl.innerText = `❌ Sai rồi! Đáp án chấp nhận: "${q.answer[0]}"`;
+        feedbackEl.innerText = `❌ Sai rồi! Đáp án đúng: "${q.answer[0]}"`;
         
-        // LƯU CÂU SAI VÀO DANH SÁCH
         wrongAnswersList.push({
             num: current + 1,
             prompt: q.prompt,
@@ -459,10 +485,14 @@ function checkAnswer(){
 
     setTimeout(()=>{
         cell.classList.add("fade-out");
+        setTimeout(()=>{ cell.style.visibility = "hidden"; }, 400);
 
-        setTimeout(()=>{
-            cell.style.visibility = "hidden";
-        },400);
+        // ĐỔI LƯỢT CHƠI (Nếu là 2v2)
+        if(gameMode === '2v2') {
+            currentTeam = (currentTeam === 'A') ? 'B' : 'A';
+            document.getElementById("card-teamA").classList.toggle("active-turn", currentTeam === 'A');
+            document.getElementById("card-teamB").classList.toggle("active-turn", currentTeam === 'B');
+        }
 
         document.getElementById("question").innerHTML = "👉 Chọn ô tiếp theo";
         document.getElementById("quiz-content").style.display = "none";
@@ -472,48 +502,45 @@ function checkAnswer(){
     checkFinish();
 }
 
+function updateScoreUI(){
+    let elA = document.getElementById("val-scoreA");
+    if(elA) elA.innerText = scoreA;
+    let elB = document.getElementById("val-scoreB");
+    if(elB) elB.innerText = scoreB;
+}
+
 function checkFinish(){
     if(answered.every(x=>x!==null)){
-        let maxScore = 300;
-        let percentage = Math.round((totalScore / maxScore) * 100);
+        let resultMsg = "";
         
-        let rankMsg = "";
-        if(percentage >= 90) rankMsg = "🎉 Xuất sắc! Khả năng nhớ từ vựng rất tuyệt vời!";
-        else if(percentage >= 70) rankMsg = "👍 Khá tốt! Hãy tiếp tục rèn luyện nhé!";
-        else rankMsg = "💪 Cố gắng thêm nhé, hãy thử lại lượt mới!";
+        if(gameMode === 'solo') {
+            let percentage = Math.round((scoreA / 300) * 100);
+            resultMsg = `<b>HOÀN THÀNH BÀI THI SOLO!</b><br>Tổng điểm của ${playerName}: ${scoreA} / 300 (${percentage}%)`;
+        } else {
+            let winner = "";
+            if(scoreA > scoreB) winner = "🏆 ĐỘI A THẮNG CỘC!";
+            else if(scoreB > scoreA) winner = "🏆 ĐỘI B THẮNG CỘC!";
+            else winner = "🤝 HÀI ĐỘI HÒA NHAU!";
 
-        document.getElementById("score").innerHTML =
-            "<b>HOÀN THÀNH BÀI THI!</b><br>" +
-            "Tổng điểm: " + totalScore + " / " + maxScore + " (" + percentage + "%)<br>" +
-            rankMsg;
+            resultMsg = `<b>KẾT QUẢ ĐẤU ĐỘI 2V2!</b><br>🔵 Đội A: ${scoreA} điểm | 🔴 Đội B: ${scoreB} điểm<br><br><span style="color: #00e5ff; font-size: 1.3rem;">${winner}</span>`;
+        }
 
-        // HIỂN THỊ DANH SÁCH CÂU SAI NẾU CÓ
+        document.getElementById("score").innerHTML = resultMsg;
+
         if(wrongAnswersList.length > 0) {
-            let summaryHTML = `<div class="wrong-list-container">
-                <div class="wrong-list-title">⚠️ Danh sách ${wrongAnswersList.length} câu bạn làm chưa đúng:</div>`;
-            
+            let summaryHTML = `<div class="wrong-list-container"><div style="color: #ff5252; font-weight: bold; margin-bottom: 10px;">⚠️ Danh sách câu trả lời chưa chính xác:</div>`;
             wrongAnswersList.forEach(item => {
                 summaryHTML += `
                 <div class="wrong-item">
                     <b>Ô số ${item.num}:</b> Từ <b>"${item.prompt}"</b><br>
-                    • Bạn gõ: <span class="user-ans">${item.userAns}</span><br>
-                    • Đáp án đúng: <span class="correct-ans">${item.correctAns}</span>
+                    • Đã gõ: <span style="text-decoration: line-through; color: #ff8a80;">${item.userAns}</span> | Đáp án: <span style="color: #69f0ae; font-weight: bold;">${item.correctAns}</span>
                 </div>`;
             });
-
             summaryHTML += `</div>`;
             document.getElementById("wrong-summary").innerHTML = summaryHTML;
-        } else {
-            document.getElementById("wrong-summary").innerHTML = `<div style="color: #00e676; font-weight: bold; margin-top: 15px;">🌟 Bạn đã trả lời đúng 100% tất cả các câu! Tốt lắm!</div>`;
         }
     }
 }
-
-function updateScoreUI(){
-    document.getElementById("player-score").innerText = "🏆 Điểm số: " + totalScore;
-}
-
-createGrid();
 </script>
 
 </body>
