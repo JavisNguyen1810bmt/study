@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Từ Vựng - Solo & 2v2</title>
+<title>Quiz Từ Vựng - Solo, 2v2 & Anki Mode</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -18,7 +18,85 @@ body {
     min-height: 100vh;
 }
 
-/* KHUNG CHUNG */
+/* ================= HAMBURGER MENU & DRAWER ================= */
+.menu-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: 0.2s;
+}
+.menu-btn:hover { background: rgba(0, 229, 255, 0.4); }
+
+.drawer-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    display: none;
+    backdrop-filter: blur(3px);
+}
+
+.drawer {
+    position: fixed;
+    top: 0; left: -320px;
+    width: 320px; height: 100%;
+    background: #1a1829;
+    z-index: 1002;
+    transition: left 0.3s ease;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.drawer.open { left: 0; }
+
+.drawer-header {
+    padding: 20px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.drawer-header h3 { margin: 0; color: #00e5ff; font-size: 1.2rem; }
+.close-btn {
+    background: none; border: none; color: white;
+    font-size: 1.5rem; cursor: pointer;
+}
+
+.drawer-search {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.drawer-search input {
+    width: 100%; padding: 8px 12px;
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1); color: white; outline: none;
+}
+
+.drawer-content {
+    flex: 1; overflow-y: auto; padding: 15px;
+}
+
+.vocab-item-menu {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+}
+.vocab-item-menu b { color: #ff9800; }
+.vocab-item-menu span { color: #ddd; font-size: 0.85rem; }
+
+/* ================= KHUNG CHUNG ================= */
 .card-box {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(15px);
@@ -32,180 +110,124 @@ body {
 }
 .card-box h2 {
     color: #ff5252;
-    text-shadow:
-    0 0 5px  #ff260036,
-    0 0 10px #ff000034,
-    0 0 20px #ac2d2d3a,
-    0 0 40px #ff000033,
-    0 0 80px #ff00003b;
+    text-shadow: 0 0 5px #ff260036, 0 0 10px #ff000034;
 }
 .card-box h3{
     font-size: x-large;
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: yellow;
-    text-shadow:
-    0 0 5px  #f5bc01,
-    0 0 10px #faf603b4,
-    0 0 20px #fce301c0,
-    0 0 40px #f3c706ad,
-    0 0 80px #e6bd06dc;
-}
-/* SCREEN 1: LOGIN & MODE SELECT */
-.form-group {
-    margin-bottom: 15px;
 }
 
+/* INPUT & BUTTON */
+.form-group { margin-bottom: 15px; }
+
 .input-style {
-    width: 100%;
-    max-width: 350px;
-    padding: 12px;
-    border-radius: 12px;
-    border: 2px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.9);
-    color: #000;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    outline: none;
+    width: 100%; max-width: 350px; padding: 12px;
+    border-radius: 12px; border: 2px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.9); color: #000;
+    font-size: 1rem; font-weight: bold; text-align: center; outline: none;
 }
 
 .mode-btn-container {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;
 }
 
 .btn-main {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    color: white;
+    padding: 12px 25px; border: none; border-radius: 12px;
+    font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; color: white;
 }
-
 .btn-solo { background: #00e5ff; color: black; }
 .btn-2v2 { background: #ff4081; color: white; }
 .btn-main:hover { transform: scale(1.05); }
 
-/* SCREEN 2: GAMEPLAY */
-.player-box {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-
+/* GAMEPLAY */
+.player-box { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
 .player-card {
-    padding: 10px 20px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 1rem;
-    background: rgba(255,255,255,0.15);
-    border: 2px solid transparent;
+    padding: 10px 20px; border-radius: 15px; font-weight: bold; font-size: 1rem;
+    background: rgba(255,255,255,0.15); border: 2px solid transparent;
 }
-
 .player-card.active-turn {
-    border-color: #00e5ff;
-    box-shadow: 0 0 15px #00e5ff;
-    background: rgba(0, 229, 255, 0.2);
+    border-color: #00e5ff; box-shadow: 0 0 15px #00e5ff; background: rgba(0, 229, 255, 0.2);
 }
-
 .team-a { color: #00e5ff; }
 .team-b { color: #ff5252; }
 
-/* INPUT & BUTTON IN GAME */
-.input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 400px;
-    margin: 0 auto;
-}
+.input-container { display: flex; flex-direction: column; gap: 12px; max-width: 450px; margin: 0 auto; }
+.btn-action-group { display: flex; gap: 10px; }
 
 .submit-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    background: #00e676;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+    flex: 2; padding: 12px; border: none; border-radius: 12px;
+    background: #00e676; color: white; font-size: 1rem; font-weight: bold; cursor: pointer;
+}
+.hint-btn {
+    flex: 1; padding: 12px; border: none; border-radius: 12px;
+    background: #ff9800; color: white; font-size: 0.95rem; font-weight: bold; cursor: pointer;
+}
+.hint-box {
+    background: rgba(255, 235, 59, 0.2); border: 1px dashed #ffeb3b;
+    color: #fffde7; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; display: none;
 }
 
-.feedback {
-    margin-top: 15px;
-    font-size: 1.05rem;
-    font-weight: bold;
-    min-height: 28px;
+/* NÚT ANKI */
+.anki-container {
+    display: none; margin-top: 15px; background: rgba(0, 0, 0, 0.4);
+    padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2);
 }
+.anki-title { font-size: 0.9rem; color: #ffd54f; margin-bottom: 10px; font-weight: bold; }
+.anki-btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.anki-btn {
+    padding: 10px 5px; border: none; border-radius: 8px; font-weight: bold;
+    font-size: 0.85rem; cursor: pointer; color: white; transition: 0.2s;
+}
+.anki-btn span { display: block; font-size: 0.75rem; opacity: 0.8; font-weight: normal; }
+.btn-again { background: #f44336; }
+.btn-hard { background: #ff9800; }
+.btn-good { background: #2196f3; }
+.btn-easy { background: #4caf50; }
 
+.feedback { margin-top: 15px; font-size: 1.05rem; font-weight: bold; min-height: 28px; }
 .text-correct { color: #00e676; }
 .text-wrong { color: #ff5252; }
 
-/* BẢNG THỐNG KÊ CÂU SAI */
-.wrong-list-container {
-    margin-top: 20px;
-    text-align: left;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-.wrong-item {
-    background: rgba(255, 82, 82, 0.15);
-    border-left: 4px solid #ff5252;
-    padding: 10px;
-    margin-bottom: 8px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-}
+/* BẢNG THỐNG KÊ */
+.wrong-list-container { margin-top: 20px; text-align: left; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; }
+.wrong-item { background: rgba(255, 255, 255, 0.08); border-left: 4px solid #00e5ff; padding: 10px; margin-bottom: 8px; border-radius: 6px; font-size: 0.9rem; }
 
 /* GRID BOARD */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    gap: 10px;
-    max-width: 750px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.cell {
-    background: linear-gradient(145deg, #ffffff, #dcdcdc);
-    color: black;
-    padding: 12px 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: all 0.2s;
-    user-select: none;
-}
-
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 10px; max-width: 750px; width: 100%; margin: 0 auto; }
+.cell { background: linear-gradient(145deg, #ffffff, #dcdcdc); color: black; padding: 12px 5px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.2s; user-select: none; }
 .fade-out { animation: vanish 0.4s forwards; }
-@keyframes vanish {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.2); opacity: 0; }
-}
+@keyframes vanish { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.2); opacity: 0; } }
 
 @media (max-width: 480px) {
     .grid { grid-template-columns: repeat(6, 1fr); gap: 6px; }
     .cell { padding: 8px 2px; font-size: 0.85rem; }
+    .anki-btn-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- MAN HINTH DANG NHAP & CHON CHE DO -->
+<!-- NÚT HAMBURGER -->
+<button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+
+<!-- DRAWER SLIDE-OUT MENU -->
+<div id="drawer-overlay" class="drawer-overlay" onclick="toggleMenu()"></div>
+<div id="drawer" class="drawer">
+    <div class="drawer-header">
+        <h3>📖 Danh Sách Từ Vựng</h3>
+        <button class="close-btn" onclick="toggleMenu()">✕</button>
+    </div>
+    <div class="drawer-search">
+        <input type="text" id="menu-search-input" placeholder="🔍 Tìm kiếm từ vựng..." onkeyup="filterMenuVocab()">
+    </div>
+    <div class="drawer-content" id="drawer-vocab-list">
+        <!-- Danh sách từ vựng sẽ render bằng JavaScript -->
+    </div>
+</div>
+
+<!-- DANG NHAP -->
 <div id="login-screen" class="card-box" style="margin-top: 50px;">
     <h2> !!MASTER CHEF!! </h2>
     <p>Nhập tên người chơi để bắt đầu:</p>
@@ -215,16 +237,14 @@ body {
     </div>
 
     <div class="mode-btn-container">
-        <button class="btn-main btn-solo" onclick="startGame('solo')">👤 Chế Độ Solo</button>
+        <button class="btn-main btn-solo" onclick="startGame('solo')">👤 Chế Độ Solo + Anki</button>
         <button class="btn-main btn-2v2" onclick="startGame('2v2')">👥 Chế Độ Đấu Đội 2v2</button>
-
     </div>
     <h3>BY: NamHoang</h3>
 </div>
 
-<!-- MAN HINH GAMEPLAY -->
+<!-- GAMEPLAY -->
 <div id="game-screen" style="display: none;">
-    
     <div class="player-box" id="scoreboard"></div>
 
     <div class="card-box">
@@ -233,7 +253,22 @@ body {
         <div id="quiz-content" style="display: none;">
             <div class="input-container">
                 <input type="text" id="user-input" class="input-style" placeholder="Nhập đáp án..." autocomplete="off" onkeypress="handleKeyPress(event)">
-                <button class="submit-btn" onclick="checkAnswer()">Xác nhận (Enter)</button>
+                <div class="btn-action-group" id="normal-btn-group">
+                    <button class="submit-btn" onclick="checkAnswer()">Xác nhận (Enter)</button>
+                    <button class="hint-btn" id="btn-hint" onclick="showHint()">💡 Gợi ý</button>
+                </div>
+                <div id="hint-box" class="hint-box"></div>
+
+                <!-- ĐÁNH GIÁ ANKI -->
+                <div id="anki-selector" class="anki-container">
+                    <div class="anki-title">🧠 Chọn mức độ ghi nhớ (Anki SRS):</div>
+                    <div class="anki-btn-grid">
+                        <button class="anki-btn btn-again" onclick="submitAnkiRating('again')">🔴 Lại<span>5-7 phút</span></button>
+                        <button class="anki-btn btn-hard" onclick="submitAnkiRating('hard')">🟠 Khó<span>15-30 phút</span></button>
+                        <button class="anki-btn btn-good" onclick="submitAnkiRating('good')">🔵 Tốt<span>1-2 tiếng</span></button>
+                        <button class="anki-btn btn-easy" onclick="submitAnkiRating('easy')">🟢 Dễ<span>2-3 ngày</span></button>
+                    </div>
+                </div>
             </div>
             <div id="feedback" class="feedback"></div>
         </div>
@@ -246,13 +281,13 @@ body {
 </div>
 
 <script>
-let gameMode = 'solo'; // 'solo' hoặc '2v2'
+let gameMode = 'solo'; 
 let playerName = 'Player 1';
-let scoreA = 0;
-let scoreB = 0;
-let currentTeam = 'A'; // 'A' hoặc 'B' trong chế độ 2v2
+let scoreA = 0; scoreB = 0;
+let currentTeam = 'A'; 
 
 let vocabList = [
+    // --- DANH SÁCH TOÀN BỘ 180 TỪ VỰNG ---
     { en: "abide by", vi: ["tuân theo", "tuan theo", "tuân thủ", "tuan thu"] },
     { en: "agreement", vi: ["sự thỏa thuận", "su thoa thuan", "hợp đồng", "hop dong"] },
     { en: "assurance", vi: ["sự đảm bảo", "su dam bao", "tự tin", "tu tin"] },
@@ -371,9 +406,131 @@ let vocabList = [
     { en: "mention", vi: ["đề cập", "de cap", "sự đề cập", "su de cap"] },
     { en: "petition", vi: ["đơn kiến nghị", "don kien nghi", "yêu cầu chính thức", "yeu cau chinh thuc"] },
     { en: "proof", vi: ["đọc soát lỗi", "doc soat loi", "bằng chứng", "bang chung"] },
-    { en: "revise", vi: ["sửa đổi", "sua doi", "viết lại", "viet lai"] }
+    { en: "revise", vi: ["sửa đổi", "sua doi", "viết lại", "viet lai"] },
+    { en: "abundant", vi: ["dồi dào", "doi dao", "phong phú", "phong phu"] },
+    { en: "accomplishment", vi: ["thành tựu", "thanh tuu", "thành công", "thanh cong"] },
+    { en: "bring together", vi: ["tập hợp lại", "tap hop lai", "đoàn kết", "doan ket"] },
+    { en: "candidate", vi: ["ứng cử viên", "ung cu vien"] },
+    { en: "come up with", vi: ["nghĩ ra", "nghi ra", "đề xuất", "de xuat"] },
+    { en: "commensurate", vi: ["tương xứng", "tuong xung", "phù hợp với", "phu hop voi"] },
+    { en: "match", vi: ["sự phù hợp", "su phu hop", "ghép", "ghep", "làm cho phù hợp", "lam cho phu hop"] },
+    { en: "profile", vi: ["hồ sơ", "ho so", "đặc điểm chung", "dac diem chung"] },
+    { en: "qualifications", vi: ["trình độ", "trinh do", "năng lực", "nang luc", "bằng cấp cần thiết", "bang cap can thiet"] },
+    { en: "recruit", vi: ["tuyển dụng", "tuyen dung", "người mới được tuyển", "nguoi moi duoc tuyen"] },
+    { en: "submit", vi: ["nộp", "nop", "đệ trình", "de trinh"] },
+    { en: "time-consuming", vi: ["tốn nhiều thời gian", "ton nhieu thoi gian"] },
+    { en: "ability", vi: ["khả năng", "kha nang", "năng lực", "nang luc"] },
+    { en: "apply", vi: ["nộp đơn", "nop don", "ứng tuyển", "ung tuyen"] },
+    { en: "background", vi: ["kinh nghiệm", "kinh nghiem", "quá trình học vấn và làm việc", "qua trinh hoc van va lam viec"] },
+    { en: "be ready for", vi: ["sẵn sàng cho", "san sang cho"] },
+    { en: "call in", vi: ["gọi đến", "goi den", "mời đến", "moi den"] },
+    { en: "confidence", vi: ["sự tự tin", "su tu tin"] },
+    { en: "constantly", vi: ["liên tục", "lien tuc", "không ngừng", "khong ngung"] },
+    { en: "expert", vi: ["chuyên gia", "chuyen gia"] },
+    { en: "follow up", vi: ["theo dõi", "theo doi", "tiếp tục thực hiện", "tiep tuc thuc hien"] },
+    { en: "hesitant", vi: ["do dự", "do du", "ngần ngại", "ngan ngai"] },
+    { en: "present", vi: ["giới thiệu", "gioi thieu", "trình bày", "trinh bay"] },
+    { en: "weakly", vi: ["yếu ớt", "yeu ot", "thiếu sức thuyết phục", "thieu suc thuyet phuc"] },
+    { en: "conduct", vi: ["hành vi", "hanh vi", "cách cư xử", "cach cu xu", "tiến hành", "tien hanh", "thực hiện", "thuc hien"] },
+    { en: "generate", vi: ["tạo ra", "tao ra"] },
+    { en: "hire", vi: ["nhân viên mới", "nhan vien moi", "thuê", "thue", "tuyển dụng", "tuyen dung"] },
+    { en: "keep up with", vi: ["theo kịp", "theo kip", "bắt kịp", "bat kip"] },
+    { en: "look up to", vi: ["ngưỡng mộ", "nguong mo", "coi trọng", "coi trong"] },
+    { en: "mentor", vi: ["người cố vấn", "nguoi co van", "người hướng dẫn", "nguoi huong dan"] },
+    { en: "on track", vi: ["đúng tiến độ", "dung tien do", "tập trung", "tap trung"] },
+    { en: "reject", vi: ["thứ bị loại bỏ", "thu bi loai bo", "từ chối", "tu choi"] },
+    { en: "set up", vi: ["được thiết lập", "duoc thiet lap", "thiết lập", "thiet lap", "sắp xếp", "sap xep"] },
+    { en: "success", vi: ["thành công", "thanh cong"] },
+    { en: "training", vi: ["sự đào tạo", "su dao tao", "huấn luyện", "huan luyen"] },
+    { en: "update", vi: ["cập nhật", "cap nhat", "thông tin mới nhất", "thong tin moi nhat"] },
+    { en: "basis", vi: ["cơ sở", "co so", "nền tảng", "nen tang", "lý do chính", "ly do chinh"] },
+    { en: "be aware of", vi: ["nhận thức được", "nhan thuc duoc", "biết rõ", "biet ro"] },
+    { en: "benefit", vi: ["phúc lợi", "phuc loi", "được lợi", "duoc loi", "hưởng lợi", "huong loi"] },
+    { en: "compensate", vi: ["trả công", "tra cong", "bù đắp", "bu dap"] },
+    { en: "delicately", vi: ["một cách tế nhị", "mot cach te nhi", "khéo léo", "kheo leo"] },
+    { en: "eligible", vi: ["đủ điều kiện", "du dieu kien"] },
+    { en: "flexibly", vi: ["một cách linh hoạt", "mot cach linh hoat"] },
+    { en: "negotiate", vi: ["đàm phán", "dam phan", "thương lượng", "thuong luong"] },
+    { en: "raise", vi: ["sự tăng lương", "su tang luong", "tăng", "tang", "nâng lên", "nang len"] },
+    { en: "retire", vi: ["nghỉ hưu", "nghi huu", "rút lui", "rut lui"] },
+    { en: "vested", vi: ["được đảm bảo quyền lợi", "duoc dam bao quyen loi", "có liên quan", "co lien quan"] },
+    { en: "wage", vi: ["tiền lương", "tien luong"] },
+    { en: "achievement", vi: ["thành tựu", "thanh tuu", "thành tích", "thanh tich"] },
+    { en: "contribute", vi: ["đóng góp", "dong gop"] },
+    { en: "dedication", vi: ["sự tận tâm", "su tan tam", "cống hiến", "cong hien"] },
+    { en: "look forward to", vi: ["mong đợi", "mong doi", "trông chờ", "trong cho"] },
+    { en: "look to", vi: ["trông cậy vào", "trong cay vao", "dựa vào", "dua vao"] },
+    { en: "loyal", vi: ["trung thành", "trung thanh"] },
+    { en: "merit", vi: ["giá trị", "gia tri", "phẩm chất tốt", "pham chat tot"] },
+    { en: "obviously", vi: ["rõ ràng", "ro rang", "hiển nhiên", "hien nhien"] },
+    { en: "productive", vi: ["có năng suất", "co nang suat", "hiệu quả", "hieu qua"] },
+    { en: "promote", vi: ["thăng chức", "thang chuc", "quảng bá", "quang ba", "ủng hộ", "ung ho"] },
+    { en: "recognition", vi: ["sự công nhận", "su cong nhan", "ghi nhận", "ghi nhan"] },
+    { en: "value", vi: ["đánh giá cao", "danh gia cao", "định giá", "dinh gia"] }
 ];
 
+// FUNCTION LOGIC FOR HAMBURGER MENU
+function toggleMenu() {
+    let drawer = document.getElementById("drawer");
+    let overlay = document.getElementById("drawer-overlay");
+    if(drawer.classList.contains("open")) {
+        drawer.classList.remove("open");
+        overlay.style.display = "none";
+    } else {
+        drawer.classList.add("open");
+        overlay.style.display = "block";
+        renderMenuVocabList(vocabList);
+    }
+}
+
+function renderMenuVocabList(list) {
+    let container = document.getElementById("drawer-vocab-list");
+    let html = "";
+    list.forEach((item, index) => {
+        html += `
+        <div class="vocab-item-menu">
+            <b>${index + 1}. ${item.en}</b><br>
+            <span>• ${item.vi[0]}</span>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function filterMenuVocab() {
+    let rawInput = document.getElementById("menu-search-input").value.trim();
+    if (!rawInput) {
+        renderMenuVocabList(vocabList);
+        return;
+    }
+
+    // Chuẩn hóa chuỗi tìm kiếm (xóa dấu tiếng Việt & chuyển về chữ thường)
+    let searchNoAccent = rawInput.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // Kiểm tra xem người dùng có phải đang nhập thuần SỐ hay không
+    let isNumber = /^\d+$/.test(rawInput);
+
+    let filtered = vocabList.filter((item, index) => {
+        let wordNumber = index + 1; // Số thứ tự từ 1 đến 180
+
+        // 1. TÌM THEO SỐ: Phải khớp CHÍNH XÁC số thứ tự
+        if (isNumber) {
+            return wordNumber === parseInt(rawInput, 10);
+        }
+
+        // 2. TÌM THEO CHỮ: So sánh Tiếng Anh hoặc Tiếng Việt (Không phân biệt có/không dấu)
+        let enWord = item.en.toLowerCase();
+        let matchVi = item.vi.some(v => 
+            v.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchNoAccent)
+        );
+
+        return enWord.includes(searchNoAccent) || matchVi;
+    });
+
+    renderMenuVocabList(filtered);
+}
+
+
+// MAIN QUIZ LOGIC
 let generatedQuestions = [];
 vocabList.forEach(item => {
     generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
@@ -384,6 +541,8 @@ let questions = generatedQuestions.sort(() => Math.random() - 0.5);
 let current = null;
 let answered = Array(30).fill(null);
 let wrongAnswersList = [];
+let ankiReviewList = []; 
+let hintLevel = 0;
 
 function startGame(mode) {
     let nameInput = document.getElementById("username").value.trim();
@@ -435,6 +594,15 @@ function loadQ(){
     
     document.getElementById("quiz-content").style.display = "block";
     document.getElementById("feedback").innerHTML = "";
+    document.getElementById("anki-selector").style.display = "none";
+    document.getElementById("normal-btn-group").style.display = "flex";
+    
+    hintLevel = 0;
+    let hintBox = document.getElementById("hint-box");
+    hintBox.style.display = "none";
+    hintBox.innerHTML = "";
+    document.getElementById("btn-hint").disabled = false;
+    document.getElementById("btn-hint").innerText = "💡 Gợi ý";
     
     let input = document.getElementById("user-input");
     input.value = "";
@@ -442,9 +610,28 @@ function loadQ(){
     input.focus();
 }
 
-function handleKeyPress(e) {
-    if (e.key === "Enter") checkAnswer();
+function showHint() {
+    let q = questions[current];
+    let target = q.answer[0]; 
+    let hintBox = document.getElementById("hint-box");
+    hintBox.style.display = "block";
+
+    hintLevel++;
+
+    if(hintLevel === 1) {
+        let firstChar = target.charAt(0);
+        hintBox.innerHTML = `💡 <b>Gợi ý 1:</b> Bắt đầu bằng chữ <b>"${firstChar.toUpperCase()}"</b> (${target.length} ký tự)`;
+        document.getElementById("btn-hint").innerText = "💡 Gợi ý thêm";
+    } else if(hintLevel === 2) {
+        let firstChar = target.charAt(0);
+        let lastChar = target.charAt(target.length - 1);
+        hintBox.innerHTML = `💡 <b>Gợi ý 2:</b> Bắt đầu bằng <b>"${firstChar.toUpperCase()}"</b> và kết thúc bằng <b>"${lastChar.toUpperCase()}"</b>`;
+        document.getElementById("btn-hint").disabled = true;
+        document.getElementById("btn-hint").innerText = "Hết gợi ý";
+    }
 }
+
+function handleKeyPress(e) { if (e.key === "Enter") checkAnswer(); }
 
 function normalizeStr(str) {
     return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ' ');
@@ -459,16 +646,21 @@ function checkAnswer(){
 
     let q = questions[current];
     let isCorrect = q.answer.some(ans => normalizeStr(ans) === userAns);
-    let cell = document.getElementById("cell" + current);
     let feedbackEl = document.getElementById("feedback");
 
     input.disabled = true;
+    document.getElementById("btn-hint").disabled = true;
 
     if(isCorrect){
+        let earnedPoints = 10;
+        if(hintLevel === 1) earnedPoints = 7;
+        else if(hintLevel === 2) earnedPoints = 5;
+
         feedbackEl.className = "feedback text-correct";
-        feedbackEl.innerText = "🎉 Chính xác! (+10 điểm)";
-        if(gameMode === 'solo' || currentTeam === 'A') scoreA += 10;
-        else scoreB += 10;
+        feedbackEl.innerText = `🎉 Chính xác! (+${earnedPoints} điểm)`;
+        
+        if(gameMode === 'solo' || currentTeam === 'A') scoreA += earnedPoints;
+        else scoreB += earnedPoints;
     } else {
         feedbackEl.className = "feedback text-wrong";
         feedbackEl.innerText = `❌ Sai rồi! Đáp án đúng: "${q.answer[0]}"`;
@@ -483,20 +675,42 @@ function checkAnswer(){
 
     updateScoreUI();
 
-    setTimeout(()=>{
-        cell.classList.add("fade-out");
-        setTimeout(()=>{ cell.style.visibility = "hidden"; }, 400);
+    document.getElementById("normal-btn-group").style.display = "none";
+    document.getElementById("anki-selector").style.display = "block";
+}
 
-        // ĐỔI LƯỢT CHƠI (Nếu là 2v2)
-        if(gameMode === '2v2') {
-            currentTeam = (currentTeam === 'A') ? 'B' : 'A';
-            document.getElementById("card-teamA").classList.toggle("active-turn", currentTeam === 'A');
-            document.getElementById("card-teamB").classList.toggle("active-turn", currentTeam === 'B');
-        }
+function submitAnkiRating(rating) {
+    let q = questions[current];
+    let cell = document.getElementById("cell" + current);
 
-        document.getElementById("question").innerHTML = "👉 Chọn ô tiếp theo";
-        document.getElementById("quiz-content").style.display = "none";
-    }, 1500);
+    let repeatTimeText = "";
+    if(rating === 'again') repeatTimeText = "5 - 7 phút sau";
+    else if(rating === 'hard') repeatTimeText = "15 - 30 phút sau";
+    else if(rating === 'good') repeatTimeText = "1 - 2 tiếng sau";
+    else if(rating === 'easy') repeatTimeText = "2 - 3 ngày sau";
+
+    ankiReviewList.push({
+        word: q.prompt,
+        ans: q.answer[0],
+        rating: rating.toUpperCase(),
+        nextReview: repeatTimeText
+    });
+
+    if(rating === 'again' || rating === 'hard') {
+        questions.push(q);
+    }
+
+    cell.classList.add("fade-out");
+    setTimeout(()=>{ cell.style.visibility = "hidden"; }, 400);
+
+    if(gameMode === '2v2') {
+        currentTeam = (currentTeam === 'A') ? 'B' : 'A';
+        document.getElementById("card-teamA").classList.toggle("active-turn", currentTeam === 'A');
+        document.getElementById("card-teamB").classList.toggle("active-turn", currentTeam === 'B');
+    }
+
+    document.getElementById("question").innerHTML = "👉 Chọn ô tiếp theo";
+    document.getElementById("quiz-content").style.display = "none";
 
     answered[current] = true;
     checkFinish();
@@ -520,25 +734,33 @@ function checkFinish(){
             let winner = "";
             if(scoreA > scoreB) winner = "🏆 ĐỘI A THẮNG CỘC!";
             else if(scoreB > scoreA) winner = "🏆 ĐỘI B THẮNG CỘC!";
-            else winner = "🤝 HÀI ĐỘI HÒA NHAU!";
+            else winner = "🤝 HAI ĐỘI HÒA NHAU!";
 
             resultMsg = `<b>KẾT QUẢ ĐẤU ĐỘI 2V2!</b><br>🔵 Đội A: ${scoreA} điểm | 🔴 Đội B: ${scoreB} điểm<br><br><span style="color: #00e5ff; font-size: 1.3rem;">${winner}</span>`;
         }
 
         document.getElementById("score").innerHTML = resultMsg;
 
-        if(wrongAnswersList.length > 0) {
-            let summaryHTML = `<div class="wrong-list-container"><div style="color: #ff5252; font-weight: bold; margin-bottom: 10px;">⚠️ Danh sách câu trả lời chưa chính xác:</div>`;
-            wrongAnswersList.forEach(item => {
+        let summaryHTML = "";
+        if(ankiReviewList.length > 0) {
+            summaryHTML += `<div class="wrong-list-container"><div style="color: #ffd54f; font-weight: bold; margin-bottom: 10px;">🧠 Bảng tổng hợp thuật toán lặp lại (Anki SRS):</div>`;
+            ankiReviewList.forEach(item => {
+                let badgeColor = "#ff9800";
+                if(item.rating === "AGAIN") badgeColor = "#f44336";
+                if(item.rating === "GOOD") badgeColor = "#2196f3";
+                if(item.rating === "EASY") badgeColor = "#4caf50";
+
                 summaryHTML += `
                 <div class="wrong-item">
-                    <b>Ô số ${item.num}:</b> Từ <b>"${item.prompt}"</b><br>
-                    • Đã gõ: <span style="text-decoration: line-through; color: #ff8a80;">${item.userAns}</span> | Đáp án: <span style="color: #69f0ae; font-weight: bold;">${item.correctAns}</span>
+                    Từ <b>"${item.word}"</b> (${item.ans}) <br>
+                    • Mức độ: <span style="background:${badgeColor}; padding: 2px 6px; border-radius:4px; font-size:0.8rem;">${item.rating}</span> 
+                    | 🔄 Lặp lại sau: <b>${item.nextReview}</b>
                 </div>`;
             });
             summaryHTML += `</div>`;
-            document.getElementById("wrong-summary").innerHTML = summaryHTML;
         }
+
+        document.getElementById("wrong-summary").innerHTML = summaryHTML;
     }
 }
 </script>
