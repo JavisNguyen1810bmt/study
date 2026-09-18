@@ -1,4 +1,3 @@
-    // --- DANH SÁCH TOÀN BỘ 360 TỪ VỰNG ---
     { en: "abide by", vi: ["tuân theo", "tuan theo", "tuân thủ", "tuan thu"] },
     { en: "agreement", vi: ["sự thỏa thuận", "su thoa thuan", "hợp đồng", "hop dong"] },
     { en: "assurance", vi: ["sự đảm bảo", "su dam bao", "tự tin", "tu tin"] },
@@ -207,8 +206,6 @@
     { en: "estimate", vi: ["ước tính", "uoc tinh", "sự ước lượng", "su uoc luong"] },
     { en: "impose", vi: ["áp đặt", "ap dat", "bắt buộc", "bat buoc"] },
     { en: "mistake", vi: ["sai lầm", "sai lam", "lỗi", "loi"] },
-
-    // Ảnh 3
     { en: "order", vi: ["đơn đặt hàng", "don dat hang", "ra lệnh", "ra lenh"] },
     { en: "promptly", vi: ["đúng giờ", "dung gio", "kịp thời", "kip thoi"] },
     { en: "rectify", vi: ["sửa chữa", "sua chua", "khắc phục", "khac phuc"] },
@@ -223,8 +220,6 @@
     { en: "run", vi: ["vận hành", "van hanh", "hoạt động", "hoat dong"] },
     { en: "scan", vi: ["quét", "quet", "xem lướt qua", "xem luot qua"] },
     { en: "subtract", vi: ["trừ đi", "tru di", "khấu trừ", "khau tru"] },
-
-    // Ảnh 4
     { en: "tedious", vi: ["tẻ nhạt", "te nhat", "nhàm chán", "nham chan"] },
     { en: "verify", vi: ["xác minh", "xac minh", "kiểm chứng", "kiem chung"] },
     { en: "accept", vi: ["chấp nhận", "chap nhan", "tiếp nhận", "tiep nhan"] },
@@ -242,8 +237,6 @@
     { en: "accounting", vi: ["kế toán", "ke toan"] },
     { en: "accumulate", vi: ["tích lũy", "tich luy", "tập hợp", "tap hop"] },
     { en: "asset", vi: ["tài sản", "tai san"] },
-
-    // Ảnh 5
     { en: "audit", vi: ["sự kiểm toán", "su kiem toan", "kiểm toán", "kiem toan"] },
     { en: "budget", vi: ["ngân sách", "ngan sach", "lập ngân sách", "lap ngan sach"] },
     { en: "build up", vi: ["xây dựng", "xay dung", "tích lũy dần", "tich luy dan"] },
@@ -260,8 +253,6 @@
     { en: "fund", vi: ["quỹ", "quy", "cấp vốn", "cap von"] },
     { en: "invest", vi: ["đầu tư", "dau tu"] },
     { en: "long-term", vi: ["dài hạn", "dai han"] },
-
-    // Ảnh 6
     { en: "bargain", vi: ["mặc cả", "mac ca", "thương lượng", "thuong luong"] },
     { en: "bear", vi: ["chịu đựng", "chiu dung", "dung thứ", "dung thu"] },
     { en: "behavior", vi: ["hành vi", "hanh vi", "cách cư xử", "cach cu xu"] },
@@ -277,8 +268,6 @@
     { en: "diversify", vi: ["đa dạng hóa", "da dang hoa"] },
     { en: "enterprise", vi: ["doanh nghiệp", "doanh nghiep", "dự án lớn", "du an lon"] },
     { en: "essentially", vi: ["về cơ bản", "ve co ban", "chủ yếu", "chu yeu"] },
-
-    // Ảnh 7
     { en: "portfolio", vi: ["danh mục đầu tư", "danh muc dau tu"] },
     { en: "pull out", vi: ["rút lui", "rut lui", "ngừng tham gia", "ngung tham gia"] },
     { en: "resource", vi: ["tài nguyên", "tai nguyen", "nguồn lực", "nguon luc"] },
@@ -295,8 +284,6 @@
     { en: "preparation", vi: ["sự chuẩn bị", "su chuan bi"] },
     { en: "refund", vi: ["tiền hoàn lại", "tien hoan lai", "hoàn tiền", "hoan tien"] },
     { en: "spouse", vi: ["vợ/chồng", "vo/chong"] },
-
-    // Ảnh 8
     { en: "withhold", vi: ["giữ lại", "giu lai", "khấu trừ trước", "khau tru truoc"] },
     { en: "desire", vi: ["mong muốn", "mong muon"] },
     { en: "detail", vi: ["trình bày chi tiết", "trinh bay chi tiet"] },
@@ -312,8 +299,6 @@
     { en: "yield", vi: ["sản lượng", "san luong", "lợi nhuận", "loi nhuan"] },
     { en: "adjacent", vi: ["liền kề", "lien ke", "sát bên", "sat ben"] },
     { en: "collaboration", vi: ["sự hợp tác", "su hop tac"] },
-
-    // Ảnh 9
     { en: "concentrate", vi: ["tập trung", "tap trung"] },
     { en: "conducive", vi: ["góp phần tạo điều kiện thuận lợi", "gop phan tao dieu kien thuan loi"] },
     { en: "disruption", vi: ["sự gián đoạn", "su gian doan", "xáo trộn", "xao tron"] },
@@ -328,8 +313,6 @@
     { en: "agenda", vi: ["chương trình nghị sự", "chuong trinh nghi su"] },
     { en: "bring up", vi: ["đề cập", "de cap", "nêu ra", "neu ra"] },
     { en: "conclude", vi: ["kết thúc", "ket thuc", "đi đến kết luận", "di den ket luan"] },
-
-    // Ảnh 10
     { en: "go ahead", vi: ["tiến hành", "tien hanh", "sự cho phép", "su cho phep"] },
     { en: "goal", vi: ["mục tiêu", "muc tieu"] },
     { en: "lengthy", vi: ["dài", "dai", "kéo dài", "keo dai"] },
@@ -359,8 +342,6 @@
     { en: "logical", vi: ["hợp lý", "hop ly", "lô-gic", "lo-gic"] },
     { en: "research", vi: ["nghiên cứu", "nghien cuu"] },
     { en: "responsibility", vi: ["trách nhiệm", "trach nhiem"] },
-
-    // Ảnh 12 (346 - 359)
     { en: "solve", vi: ["giải quyết", "giai quyet"] },
     { en: "supervisor", vi: ["người giám sát", "nguoi giam sat"] },
     { en: "systematically", vi: ["một cách có hệ thống", "mot cach co he thong"] },
@@ -375,6 +356,4 @@
     { en: "lock into", vi: ["ràng buộc", "rang buoc", "cam kết", "cam ket"] },
     { en: "occupy", vi: ["chiếm dụng", "chiem dung", "cư trú", "cu tru"] },
     { en: "option", vi: ["lựa chọn", "lua chon"] },
-
-    // Ảnh 13 (360)
     { en: "subject to", vi: ["tuân theo", "tuan theo", "phụ thuộc vào", "phu thuoc vao"] }
