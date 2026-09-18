@@ -297,22 +297,37 @@ let hintLevel = 0;
 // FETCH DỮ LIỆU TỪ DB.TXT
 async function loadVocabData() {
     try {
-        const response = await fetch('db.txt');
+        // Gọi trực tiếp db.txt vì nằm cùng thư mục Quiz
+        const response = await fetch('db.txt'); 
         if (!response.ok) throw new Error("Không thể tải cơ sở dữ liệu db.txt");
-        vocabList = await response.json();
-        
-        // Tạo danh sách câu hỏi sau khi tải xong dữ liệu
+
+        // Đọc dưới dạng Text để lọc bỏ các dòng comment // trước khi parse JSON
+        let text = await response.text();
+        let cleanText = text
+            .split('\n')
+            .filter(line => !line.trim().startsWith('//'))
+            .join('\n');
+
+        vocabList = JSON.parse(cleanText);
+
+        // Reset lại mảng tránh trùng lặp dữ liệu khi load
+        generatedQuestions = [];
+
+        // Tạo danh sách câu hỏi
         vocabList.forEach(item => {
-            generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
-            generatedQuestions.push({ prompt: item.vi[0], type: "VI_TO_EN", answer: [item.en] });
+            if (item.en && item.vi) {
+                generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
+                generatedQuestions.push({ prompt: item.vi[0], type: "VI_TO_EN", answer: [item.en] });
+            }
         });
+
         questions = generatedQuestions.sort(() => Math.random() - 0.5);
+
     } catch (error) {
         console.error("Lỗi tải dữ liệu:", error);
         alert("Không thể đọc dữ liệu từ db.txt. Vui lòng kiểm tra lại file hoặc máy chủ Web!");
     }
 }
-loadVocabData();
 
 // FUNCTION LOGIC FOR HAMBURGER MENU
 function toggleMenu() {
