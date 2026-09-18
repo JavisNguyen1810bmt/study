@@ -281,193 +281,38 @@ body {
 </div>
 
 <script>
+let vocabList = [];
+let generatedQuestions = [];
+let questions = [];
 let gameMode = 'solo'; 
 let playerName = 'Player 1';
-let scoreA = 0; scoreB = 0;
+let scoreA = 0, scoreB = 0;
 let currentTeam = 'A'; 
+let current = null;
+let answered = Array(30).fill(null);
+let wrongAnswersList = [];
+let ankiReviewList = []; 
+let hintLevel = 0;
 
-let vocabList = [
-    // --- DANH SÁCH TOÀN BỘ 180 TỪ VỰNG ---
-    { en: "abide by", vi: ["tuân theo", "tuan theo", "tuân thủ", "tuan thu"] },
-    { en: "agreement", vi: ["sự thỏa thuận", "su thoa thuan", "hợp đồng", "hop dong"] },
-    { en: "assurance", vi: ["sự đảm bảo", "su dam bao", "tự tin", "tu tin"] },
-    { en: "cancellation", vi: ["sự hủy bỏ", "su huy bo", "sự dừng lại", "su dung lai"] },
-    { en: "determine", vi: ["xác định", "xac dinh", "tìm ra", "tim ra"] },
-    { en: "engage", vi: ["tham gia", "tham gia", "lôi cuốn", "loi cuon"] },
-    { en: "establish", vi: ["thiết lập", "thiet lap", "tạo dựng", "tao dung"] },
-    { en: "obligate", vi: ["ràng buộc", "rang buoc"] },
-    { en: "party", vi: ["bên", "ben", "phe", "nhóm", "nhom"] },
-    { en: "provision", vi: ["điều khoản", "dieu khoan", "sự chuẩn bị", "su chuan bi"] },
-    { en: "resolve", vi: ["giải quyết", "giai quyet", "sự quyết tâm", "su quyet tam"] },
-    { en: "specific", vi: ["cụ thể", "cu the", "riêng biệt", "rieng biet"] },
-    { en: "attract", vi: ["thu hút", "thu hut", "lôi cuốn", "loi cuon"] },
-    { en: "compare", vi: ["so sánh", "so sanh"] },
-    { en: "competition", vi: ["sự cạnh tranh", "su canh tranh", "cuộc thi", "cuoc thi"] },
-    { en: "consume", vi: ["tiêu thụ", "tieu thu", "sử dụng hết", "su dung het"] },
-    { en: "convince", vi: ["thuyết phục", "thuyet phuc"] },
-    { en: "currently", vi: ["hiện tại", "hien tai", "hiện nay", "hien nay"] },
-    { en: "fad", vi: ["trào lưu", "trao luu", "mốt nhất thời", "mot nhat thoi"] },
-    { en: "inspiration", vi: ["nguồn cảm hứng", "nguon cam hung"] },
-    { en: "market", vi: ["tiếp thị", "tiep thi", "thị trường", "thi truong"] },
-    { en: "persuasion", vi: ["sự thuyết phục", "su thuyet phuc", "niềm tin", "niem tin"] },
-    { en: "productive", vi: ["có năng suất", "co nang suat", "hiệu quả", "hieu qua"] },
-    { en: "satisfaction", vi: ["sự hài lòng", "su hai long"] },
-    { en: "characteristic", vi: ["đặc trưng", "dac trung", "tính chất riêng", "tinh chat rieng"] },
-    { en: "consequence", vi: ["hậu quả", "hau qua", "kết quả tất yếu", "ket qua tat yeu"] },
-    { en: "consider", vi: ["cân nhắc", "can nhac", "xem xét kỹ", "xem xet ky"] },
-    { en: "cover", vi: ["bảo vệ", "bao ve", "bảo hiểm", "bao hiem", "chi trả", "chi tra"] },
-    { en: "expiration", vi: ["sự hết hạn", "su het han"] },
-    { en: "frequently", vi: ["thường xuyên", "thuong xuyen"] },
-    { en: "imply", vi: ["ngụ ý", "ngu y", "ám chỉ", "am chi"] },
-    { en: "promise", vi: ["lời hứa", "loi hua", "cam kết", "cam ket"] },
-    { en: "protect", vi: ["bảo vệ", "bao ve"] },
-    { en: "reputation", vi: ["danh tiếng", "danh tieng", "uy tín", "uy tin"] },
-    { en: "require", vi: ["yêu cầu", "yeu cau", "đòi hỏi", "doi hoi"] },
-    { en: "variety", vi: ["sự đa dạng", "su da dang", "nhiều loại", "nhieu loai"] },
-    { en: "address", vi: ["giải quyết", "giai quyet", "phát biểu", "phat bieu"] },
-    { en: "avoid", vi: ["tránh", "tranh"] },
-    { en: "demonstrate", vi: ["chứng minh", "chung minh", "thể hiện rõ", "the hien ro"] },
-    { en: "develop", vi: ["phát triển", "phat trien", "mở rộng", "mo rong"] },
-    { en: "evaluate", vi: ["đánh giá", "danh gia"] },
-    { en: "gather", vi: ["thu thập", "thu thap", "suy ra", "suy ra"] },
-    { en: "offer", vi: ["đề nghị", "de nghi", "đề xuất", "de xuat"] },
-    { en: "primarily", vi: ["chủ yếu", "chu yeu", "trước hết", "truoc het"] },
-    { en: "risk", vi: ["rủi ro", "rui ro"] },
-    { en: "strategy", vi: ["chiến lược", "chien luoc"] },
-    { en: "strong", vi: ["mạnh mẽ", "manh me", "vững chắc", "vung chac"] },
-    { en: "substitution", vi: ["sự thay thế", "su thay the"] },
-    { en: "accommodate", vi: ["đáp ứng", "dap ung", "phù hợp", "phu hop"] },
-    { en: "arrangement", vi: ["sự sắp xếp", "su sap xep", "kế hoạch", "ke hoach"] },
-    { en: "association", vi: ["hiệp hội", "hiep hoi", "tổ chức", "to chuc"] },
-    { en: "attend", vi: ["tham dự", "tham du", "chú ý đến", "chu y den"] },
-    { en: "get in touch", vi: ["liên lạc", "lien lac"] },
-    { en: "hold", vi: ["chứa đựng", "chua dung", "tổ chức", "to chuc"] },
-    { en: "location", vi: ["vị trí", "vi tri", "địa điểm", "dia diem"] },
-    { en: "overcrowded", vi: ["quá đông đúc", "qua dong duc", "chật chội", "chat choi"] },
-    { en: "register", vi: ["đăng ký", "dang ky", "sổ ghi chép", "so ghi chep"] },
-    { en: "select", vi: ["lựa chọn", "lua chon"] },
-    { en: "session", vi: ["buổi họp", "buoi hop", "phiên họp", "phien hop"] },
-    { en: "take part in", vi: ["tham gia", "tham gia"] },
-    { en: "access", vi: ["truy cập", "truy cap", "quyền truy cập", "quyen truy cap"] },
-    { en: "allocate", vi: ["phân bổ", "phan bo", "chỉ định", "chi dinh"] },
-    { en: "compatible", vi: ["tương thích", "tuong thich"] },
-    { en: "delete", vi: ["xóa", "xoa"] },
-    { en: "display", vi: ["hiển thị", "hien thi", "màn hình", "man hinh"] },
-    { en: "duplicate", vi: ["sao chép", "sao chep", "làm giống hệt", "lam giong het"] },
-    { en: "failure", vi: ["sự thất bại", "su that bai", "thiếu sót", "thieu sot"] },
-    { en: "figure out", vi: ["tìm ra", "tim ra", "hiểu ra", "hieu ra"] },
-    { en: "ignore", vi: ["phớt lờ", "phot lo", "bỏ qua", "bo qua"] },
-    { en: "search", vi: ["tìm kiếm", "tim kiem"] },
-    { en: "shut down", vi: ["tắt", "tat", "ngừng hoạt động", "ngung hoat dong"] },
-    { en: "warning", vi: ["lời cảnh báo", "loi canh bao"] },
-    { en: "affordable", vi: ["giá cả phải chăng", "gia ca phai chang"] },
-    { en: "as needed", vi: ["khi cần thiết", "khi can thiet"] },
-    { en: "be in charge of", vi: ["chịu trách nhiệm", "chiu trach nhiem", "phụ trách", "phu trach"] },
-    { en: "capacity", vi: ["sức chứa", "suc chua", "khả năng tối đa", "kha nang toi da"] },
-    { en: "durable", vi: ["bền", "ben", "chắc chắn", "chac chan", "lâu bền", "lau ben"] },
-    { en: "initiative", vi: ["sáng kiến", "sang kien", "bước đầu tiên", "buoc dau tien"] },
-    { en: "physically", vi: ["về mặt thể chất", "ve mat the chat"] },
-    { en: "provider", vi: ["nhà cung cấp", "nha cung cap"] },
-    { en: "recur", vi: ["tái diễn", "tai dien", "xảy ra lại", "xay ra lai"] },
-    { en: "reduction", vi: ["sự giảm bớt", "su giam bot", "cắt giảm", "cat giam"] },
-    { en: "stay on top of", vi: ["nắm bắt", "nam bat", "cập nhật", "cap nhat"] },
-    { en: "stock", vi: ["dự trữ hàng", "du tru hang", "nguồn cung", "nguon cung"] },
-    { en: "appreciation", vi: ["sự đánh giá cao", "su danh gia cao", "lòng biết ơn", "long biet on"] },
-    { en: "be made of", vi: ["được tạo nên bởi", "duoc tao nen boi"] },
-    { en: "bring in", vi: ["tuyển dụng", "tuyen dung", "mời vào", "moi vao"] },
-    { en: "casually", vi: ["thoải mái", "thoai mai", "không trang trọng", "khong trang trong"] },
-    { en: "code", vi: ["quy tắc ứng xử", "quy tac ung xu"] },
-    { en: "expose", vi: ["cho tiếp xúc", "cho tiep xuc", "cho trải nghiệm", "cho trai nghiem"] },
-    { en: "glimpse", vi: ["cái nhìn thoáng qua", "cai nhin thoang qua"] },
-    { en: "out of", vi: ["hết", "het", "không còn", "khong con"] },
-    { en: "outdated", vi: ["lỗi thời", "loi thoi", "không còn dùng", "khong con dung"] },
-    { en: "practice", vi: ["thói quen", "thoi quen", "luyện tập", "luyen tap"] },
-    { en: "reinforce", vi: ["củng cố", "cung co", "tăng cường", "tang cuong"] },
-    { en: "verbally", vi: ["bằng lời nói", "bang loi noi"] },
-    { en: "disk", vi: ["đĩa", "dia", "đĩa lưu trữ", "dia luu tru"] },
-    { en: "facilitate", vi: ["tạo điều kiện thuận lợi", "tao dieu kien thuan loi", "hỗ trợ", "ho tro"] },
-    { en: "network", vi: ["mạng lưới", "mang luoi", "kết nối", "ket noi"] },
-    { en: "popularity", vi: ["sự phổ biến", "su pho bien", "được ưa chuộng", "duoc ua chuong"] },
-    { en: "process", vi: ["xử lý", "xu ly", "quy trình", "quy trinh"] },
-    { en: "replace", vi: ["thay thế", "thay the"] },
-    { en: "revolution", vi: ["cuộc cách mạng", "cuoc cach mang", "vòng quay", "vong quay"] },
-    { en: "sharp", vi: ["sắc bén", "sac ben", "đột ngột", "dot ngot", "thông minh", "thong minh"] },
-    { en: "skill", vi: ["kỹ năng", "ky nang"] },
-    { en: "software", vi: ["phần mềm", "phan mem"] },
-    { en: "store", vi: ["lưu trữ", "luu tru"] },
-    { en: "technically", vi: ["về mặt kỹ thuật", "ve mat ky thuat"] },
-    { en: "assemble", vi: ["lắp ráp", "lap rap", "tập hợp lại", "tap hop lai"] },
-    { en: "beforehand", vi: ["trước", "truoc", "từ trước", "tu truoc"] },
-    { en: "complication", vi: ["sự phức tạp", "su phuc tap", "tình huống khó khăn", "tinh huong kho khan"] },
-    { en: "courier", vi: ["người đưa thư", "nguoi dua thu", "giao hàng", "giao hang"] },
-    { en: "express", vi: ["nhanh", "trực tiếp", "truc tiep"] },
-    { en: "fold", vi: ["gấp", "gap"] },
-    { en: "layout", vi: ["bố cục", "bo cuc", "cách trình bày", "cach trinh bay"] },
-    { en: "mention", vi: ["đề cập", "de cap", "sự đề cập", "su de cap"] },
-    { en: "petition", vi: ["đơn kiến nghị", "don kien nghi", "yêu cầu chính thức", "yeu cau chinh thuc"] },
-    { en: "proof", vi: ["đọc soát lỗi", "doc soat loi", "bằng chứng", "bang chung"] },
-    { en: "revise", vi: ["sửa đổi", "sua doi", "viết lại", "viet lai"] },
-    { en: "abundant", vi: ["dồi dào", "doi dao", "phong phú", "phong phu"] },
-    { en: "accomplishment", vi: ["thành tựu", "thanh tuu", "thành công", "thanh cong"] },
-    { en: "bring together", vi: ["tập hợp lại", "tap hop lai", "đoàn kết", "doan ket"] },
-    { en: "candidate", vi: ["ứng cử viên", "ung cu vien"] },
-    { en: "come up with", vi: ["nghĩ ra", "nghi ra", "đề xuất", "de xuat"] },
-    { en: "commensurate", vi: ["tương xứng", "tuong xung", "phù hợp với", "phu hop voi"] },
-    { en: "match", vi: ["sự phù hợp", "su phu hop", "ghép", "ghep", "làm cho phù hợp", "lam cho phu hop"] },
-    { en: "profile", vi: ["hồ sơ", "ho so", "đặc điểm chung", "dac diem chung"] },
-    { en: "qualifications", vi: ["trình độ", "trinh do", "năng lực", "nang luc", "bằng cấp cần thiết", "bang cap can thiet"] },
-    { en: "recruit", vi: ["tuyển dụng", "tuyen dung", "người mới được tuyển", "nguoi moi duoc tuyen"] },
-    { en: "submit", vi: ["nộp", "nop", "đệ trình", "de trinh"] },
-    { en: "time-consuming", vi: ["tốn nhiều thời gian", "ton nhieu thoi gian"] },
-    { en: "ability", vi: ["khả năng", "kha nang", "năng lực", "nang luc"] },
-    { en: "apply", vi: ["nộp đơn", "nop don", "ứng tuyển", "ung tuyen"] },
-    { en: "background", vi: ["kinh nghiệm", "kinh nghiem", "quá trình học vấn và làm việc", "qua trinh hoc van va lam viec"] },
-    { en: "be ready for", vi: ["sẵn sàng cho", "san sang cho"] },
-    { en: "call in", vi: ["gọi đến", "goi den", "mời đến", "moi den"] },
-    { en: "confidence", vi: ["sự tự tin", "su tu tin"] },
-    { en: "constantly", vi: ["liên tục", "lien tuc", "không ngừng", "khong ngung"] },
-    { en: "expert", vi: ["chuyên gia", "chuyen gia"] },
-    { en: "follow up", vi: ["theo dõi", "theo doi", "tiếp tục thực hiện", "tiep tuc thuc hien"] },
-    { en: "hesitant", vi: ["do dự", "do du", "ngần ngại", "ngan ngai"] },
-    { en: "present", vi: ["giới thiệu", "gioi thieu", "trình bày", "trinh bay"] },
-    { en: "weakly", vi: ["yếu ớt", "yeu ot", "thiếu sức thuyết phục", "thieu suc thuyet phuc"] },
-    { en: "conduct", vi: ["hành vi", "hanh vi", "cách cư xử", "cach cu xu", "tiến hành", "tien hanh", "thực hiện", "thuc hien"] },
-    { en: "generate", vi: ["tạo ra", "tao ra"] },
-    { en: "hire", vi: ["nhân viên mới", "nhan vien moi", "thuê", "thue", "tuyển dụng", "tuyen dung"] },
-    { en: "keep up with", vi: ["theo kịp", "theo kip", "bắt kịp", "bat kip"] },
-    { en: "look up to", vi: ["ngưỡng mộ", "nguong mo", "coi trọng", "coi trong"] },
-    { en: "mentor", vi: ["người cố vấn", "nguoi co van", "người hướng dẫn", "nguoi huong dan"] },
-    { en: "on track", vi: ["đúng tiến độ", "dung tien do", "tập trung", "tap trung"] },
-    { en: "reject", vi: ["thứ bị loại bỏ", "thu bi loai bo", "từ chối", "tu choi"] },
-    { en: "set up", vi: ["được thiết lập", "duoc thiet lap", "thiết lập", "thiet lap", "sắp xếp", "sap xep"] },
-    { en: "success", vi: ["thành công", "thanh cong"] },
-    { en: "training", vi: ["sự đào tạo", "su dao tao", "huấn luyện", "huan luyen"] },
-    { en: "update", vi: ["cập nhật", "cap nhat", "thông tin mới nhất", "thong tin moi nhat"] },
-    { en: "basis", vi: ["cơ sở", "co so", "nền tảng", "nen tang", "lý do chính", "ly do chinh"] },
-    { en: "be aware of", vi: ["nhận thức được", "nhan thuc duoc", "biết rõ", "biet ro"] },
-    { en: "benefit", vi: ["phúc lợi", "phuc loi", "được lợi", "duoc loi", "hưởng lợi", "huong loi"] },
-    { en: "compensate", vi: ["trả công", "tra cong", "bù đắp", "bu dap"] },
-    { en: "delicately", vi: ["một cách tế nhị", "mot cach te nhi", "khéo léo", "kheo leo"] },
-    { en: "eligible", vi: ["đủ điều kiện", "du dieu kien"] },
-    { en: "flexibly", vi: ["một cách linh hoạt", "mot cach linh hoat"] },
-    { en: "negotiate", vi: ["đàm phán", "dam phan", "thương lượng", "thuong luong"] },
-    { en: "raise", vi: ["sự tăng lương", "su tang luong", "tăng", "tang", "nâng lên", "nang len"] },
-    { en: "retire", vi: ["nghỉ hưu", "nghi huu", "rút lui", "rut lui"] },
-    { en: "vested", vi: ["được đảm bảo quyền lợi", "duoc dam bao quyen loi", "có liên quan", "co lien quan"] },
-    { en: "wage", vi: ["tiền lương", "tien luong"] },
-    { en: "achievement", vi: ["thành tựu", "thanh tuu", "thành tích", "thanh tich"] },
-    { en: "contribute", vi: ["đóng góp", "dong gop"] },
-    { en: "dedication", vi: ["sự tận tâm", "su tan tam", "cống hiến", "cong hien"] },
-    { en: "look forward to", vi: ["mong đợi", "mong doi", "trông chờ", "trong cho"] },
-    { en: "look to", vi: ["trông cậy vào", "trong cay vao", "dựa vào", "dua vao"] },
-    { en: "loyal", vi: ["trung thành", "trung thanh"] },
-    { en: "merit", vi: ["giá trị", "gia tri", "phẩm chất tốt", "pham chat tot"] },
-    { en: "obviously", vi: ["rõ ràng", "ro rang", "hiển nhiên", "hien nhien"] },
-    { en: "productive", vi: ["có năng suất", "co nang suat", "hiệu quả", "hieu qua"] },
-    { en: "promote", vi: ["thăng chức", "thang chuc", "quảng bá", "quang ba", "ủng hộ", "ung ho"] },
-    { en: "recognition", vi: ["sự công nhận", "su cong nhan", "ghi nhận", "ghi nhan"] },
-    { en: "value", vi: ["đánh giá cao", "danh gia cao", "định giá", "dinh gia"] }
-];
+// FETCH DỮ LIỆU TỪ DB.TXT
+async function loadVocabData() {
+    try {
+        const response = await fetch('db.txt');
+        if (!response.ok) throw new Error("Không thể tải cơ sở dữ liệu db.txt");
+        vocabList = await response.json();
+        
+        // Tạo danh sách câu hỏi sau khi tải xong dữ liệu
+        vocabList.forEach(item => {
+            generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
+            generatedQuestions.push({ prompt: item.vi[0], type: "VI_TO_EN", answer: [item.en] });
+        });
+        questions = generatedQuestions.sort(() => Math.random() - 0.5);
+    } catch (error) {
+        console.error("Lỗi tải dữ liệu:", error);
+        alert("Không thể đọc dữ liệu từ db.txt. Vui lòng kiểm tra lại file hoặc máy chủ Web!");
+    }
+}
+loadVocabData();
 
 // FUNCTION LOGIC FOR HAMBURGER MENU
 function toggleMenu() {
@@ -503,21 +348,15 @@ function filterMenuVocab() {
         return;
     }
 
-    // Chuẩn hóa chuỗi tìm kiếm (xóa dấu tiếng Việt & chuyển về chữ thường)
     let searchNoAccent = rawInput.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    // Kiểm tra xem người dùng có phải đang nhập thuần SỐ hay không
     let isNumber = /^\d+$/.test(rawInput);
 
     let filtered = vocabList.filter((item, index) => {
-        let wordNumber = index + 1; // Số thứ tự từ 1 đến 180
-
-        // 1. TÌM THEO SỐ: Phải khớp CHÍNH XÁC số thứ tự
+        let wordNumber = index + 1;
         if (isNumber) {
             return wordNumber === parseInt(rawInput, 10);
         }
 
-        // 2. TÌM THEO CHỮ: So sánh Tiếng Anh hoặc Tiếng Việt (Không phân biệt có/không dấu)
         let enWord = item.en.toLowerCase();
         let matchVi = item.vi.some(v => 
             v.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchNoAccent)
@@ -529,22 +368,13 @@ function filterMenuVocab() {
     renderMenuVocabList(filtered);
 }
 
-
-// MAIN QUIZ LOGIC
-let generatedQuestions = [];
-vocabList.forEach(item => {
-    generatedQuestions.push({ prompt: item.en, type: "EN_TO_VI", answer: item.vi });
-    generatedQuestions.push({ prompt: item.vi[0], type: "VI_TO_EN", answer: [item.en] });
-});
-
-let questions = generatedQuestions.sort(() => Math.random() - 0.5);
-let current = null;
-let answered = Array(30).fill(null);
-let wrongAnswersList = [];
-let ankiReviewList = []; 
-let hintLevel = 0;
-
+// MAIN GAME LOGIC
 function startGame(mode) {
+    if (questions.length === 0) {
+        alert("Đang tải dữ liệu từ db.txt, vui lòng thử lại sau vài giây!");
+        return;
+    }
+
     let nameInput = document.getElementById("username").value.trim();
     if(nameInput) playerName = nameInput;
     gameMode = mode;
